@@ -29,13 +29,25 @@ async def users(ctx):
 @bot.command()
 async def shutdown(ctx):
 	"""Turns the bot off"""
-	if bot.is_owner(discord.Message.author):
-		await ctx.send('Goodbye...')
-		await bot.logout()
-		sys.exit()
+	await ctx.send('Goodbye...')
+	await bot.logout()
+	sys.exit()
+		
+@bot.command()
+async def say(ctx, *, content):
+	await ctx.send('`' + content + '`')
+	await ctx.message.delete()
+	
+@bot.command()
+async def send(ctx, channel, *, content):
+	dest = list(channel)
+	dest = int(''.join(dest[2:-1]))
+	dest = bot.get_channel(dest)
+	if dest == None: ctx.send('Channel not found')
+	else: await dest.send(content)
 
 @bot.command()
-async def name(ctx, new):
+async def setname(ctx, new: str):
 	await discord.ClientUser.edit(username=new)
 
 	
