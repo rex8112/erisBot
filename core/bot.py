@@ -48,7 +48,7 @@ async def send(ctx, channel, *, content):
 
 @bot.command()
 async def setname(ctx, new: str):
-	await discord.ClientUser.edit(username=new)
+	await bot.user.edit(username=new)
 
 	
 	
