@@ -35,16 +35,19 @@ async def shutdown(ctx):
 		
 @bot.command()
 async def say(ctx, *, content):
-	await ctx.send('`' + content + '`')
+	await ctx.send(content)
 	await ctx.message.delete()
 	
 @bot.command()
 async def send(ctx, channel, *, content):
-	dest = list(channel)
-	dest = int(''.join(dest[2:-1]))
-	dest = bot.get_channel(dest)
-	if dest == None: ctx.send('Channel not found')
-	else: await dest.send(content)
+	try:
+		dest = list(channel)
+		dest = int(''.join(dest[2:-1]))
+		print(dest)
+		dest = bot.get_channel(dest)
+		await dest.send(content)
+	except:
+		await ctx.send(content='Sorry {0},\n{1} is not a valid channel.'.format(ctx.message.author.mention, channel), delete_after=5.00)
 
 @bot.command()
 async def setname(ctx, new: str):
