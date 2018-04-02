@@ -8,13 +8,13 @@ class AdminCog:
 	
 	@commands.command()
 	@commands.is_owner()
-	async def say(ctx, *, content):
+	async def say(self, ctx, *, content):
 		await ctx.send(content)
 		await ctx.message.delete()
 	
 	@commands.command()
 	@commands.is_owner()
-	async def send(ctx, channel, *, content):
+	async def send(self, ctx, channel, *, content):
 		try:
 			dest = list(channel)
 			dest = int(''.join(dest[2:-1]))
@@ -26,12 +26,12 @@ class AdminCog:
 
 	@commands.command()
 	@commands.is_owner()
-	async def setname(ctx, new: str):
+	async def setname(self, ctx, new: str):
 		await bot.user.edit(username=new)
 		
 	@commands.command()
 	@commands.is_owner()
-	async def shutdown(ctx):
+	async def shutdown(self, ctx):
 		"""Turns the bot off"""
 		await ctx.send('Goodbye...')
 		await bot.logout()
