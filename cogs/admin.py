@@ -14,15 +14,20 @@ class AdminCog:
 	
 	@commands.command()
 	@commands.is_owner()
-	async def send(self, ctx, channel, *, content):
+	async def send(self, ctx, channel: discord.TextChannel, *, content):
 		try:
-			dest = list(channel)
-			dest = int(''.join(dest[2:-1]))
-			print(dest)
-			dest = bot.get_channel(dest)
-			await dest.send(content)
+			#est = await commands.TextChannelConverter().convert(ctx, channel)
+			await channel.send(content)
 		except:
-			await ctx.send(content='Sorry {0},\n{1} is not a valid channel.'.format(ctx.message.author.mention, channel), delete_after=5.00)
+			await ctx.send(content='Sorry {0},\n{1} is not a valid channel.'.format(ctx.message.author.name, channel), delete_after=5.00)
+			
+	@commands.command()
+	@commands.is_owner()
+	async def sendp(self, ctx, player: discord.Member, *, content):
+		try:
+			await player.send(content)
+		except:
+			await ctx.send(content='Sorry {0},\n{1} is not a valid Member.'.format(ctx.message.author.name, player, delete_after=5.00))
 
 	@commands.command()
 	@commands.is_owner()
