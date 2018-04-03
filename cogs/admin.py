@@ -16,7 +16,6 @@ class AdminCog:
 	@commands.is_owner()
 	async def send(self, ctx, channel: discord.TextChannel, *, content):
 		try:
-			#est = await commands.TextChannelConverter().convert(ctx, channel)
 			await channel.send(content)
 		except:
 			await ctx.send(content='Sorry {0},\n{1} is not a valid channel.'.format(ctx.message.author.name, channel), delete_after=5.00)
