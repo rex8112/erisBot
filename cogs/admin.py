@@ -5,10 +5,6 @@ from discord.ext import commands
 class AdminCog:
 	def __init__(self, bot):
 		self.bot = bot
-		
-	@commands.command()
-	async def perms(self, ctx, mem: discord.Member, ch: discord.TextChannel):
-		ctx.send(iter(mem.permissions_in(ch)))
 
 	@commands.command()
 	@commands.guild_only()
