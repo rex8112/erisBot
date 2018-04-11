@@ -38,7 +38,7 @@ class AdminCog:
 	async def shutdown(self, ctx):
 		"""Turns the bot off"""
 		await ctx.send('Goodbye...')
-		await bot.logout()
+		await self.bot.logout()
 		sys.exit()
 		
 		
