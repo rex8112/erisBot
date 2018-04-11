@@ -5,7 +5,24 @@ from discord.ext import commands
 class AdminCog:
 	def __init__(self, bot):
 		self.bot = bot
-	
+		
+	@commands.command()
+	async def perms(self, ctx, mem: discord.Member, ch: discord.TextChannel):
+		ctx.send(iter(mem.permissions_in(ch)))
+
+	@commands.command()
+	@commands.guild_only()
+	@commands.has_permissions(kick_members=True)
+	async def kick(self, ctx, mem: discord.Member = None, *Reason):
+		if mem is not None:
+			if Reason:
+				Reason = ' '.join(Reason)
+			else:
+				Reason = None
+			await mem.kick(reason=Reason)
+		else:
+			await ctx.send(content='Incorrect Member', delete_after=5.00)
+
 	@commands.command()
 	@commands.is_owner()
 	async def say(self, ctx, *, content):
