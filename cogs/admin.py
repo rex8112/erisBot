@@ -1,3 +1,4 @@
+import datetime
 import discord
 from discord.ext import commands
 
@@ -10,14 +11,14 @@ class AdminCog:
 	@commands.guild_only()
 	@commands.has_permissions(kick_members=True)
 	async def kick(self, ctx, mem: discord.Member = None, *Reason):
-		if mem is not None:
-			if Reason:
-				Reason = ' '.join(Reason)
-			else:
-				Reason = None
-			await mem.kick(reason=Reason)
+		embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now())
+		if Reason:
+			Reason = ' '.join(Reason)
+			embed.add_field(name='Reason', value=Reason)
 		else:
-			await ctx.send(content='Incorrect Member', delete_after=5.00)
+			Reason = None
+		await mem.send(embed=embed)
+		await mem.kick(reason=ctx.message.author.name + ' | ' + Reason)
 
 	@commands.command()
 	@commands.is_owner()
