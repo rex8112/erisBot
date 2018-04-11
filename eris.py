@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 
-startup_extensions = ['cogs.admin',
-					  'cogs.utility']
+startup_extensions = ['cogs.admin', 'cogs.utility']
 
 bot = commands.Bot(description='Testing some stuff', command_prefix='t.')
 
