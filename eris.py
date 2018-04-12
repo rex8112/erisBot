@@ -20,7 +20,7 @@ async def on_command_completion(ctx):
 	if log is None:
 		return
 		
-	embed = discord.Embed(title="{}".format(ctx.command), colour=discord.Colour(0x9013fe), description="in {}\nby {}".format(ctx.message.channel, ctx.message.author), timestamp=datetime.datetime.now())
+	embed = discord.Embed(title="{}".format(ctx.command), colour=discord.Colour(0x9013fe), description="in {}\nby {}".format(ctx.message.channel, ctx.message.author.mention), timestamp=datetime.datetime.now())
 	embed.set_author(name="Command Invoked")
 	embed.add_field(name="Full Command:", value="{}".format(ctx.message.content))
 
