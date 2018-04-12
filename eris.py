@@ -14,6 +14,18 @@ async def on_ready():
 	print('ID:   {}'.format(bot.user.id))
 	print("----------")
 	
+@bot.event
+async def on_command_completion(ctx):
+	log = bot.get_channel(__logid__)
+	if log is None:
+		return
+		
+	embed = discord.Embed(title="{}".format(ctx.command), colour=discord.Colour(0x9013fe), description="in {}\nby {}".format(ctx.message.channel, ctx.message.author), timestamp=datetime.datetime.now())
+	embed.set_author(name="Command Invoked")
+	embed.add_field(name="Full Command:", value="{}".format(ctx.message.content))
+
+	await log.send(embed=embed)
+
 	
 	
 if __name__ == "__main__":
