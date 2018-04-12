@@ -1,5 +1,7 @@
+import datetime
 import discord
 from discord.ext import commands
+from config.config import __token__, __logid__
 
 startup_extensions = ['cogs.admin', 'cogs.utility']
 
@@ -8,8 +10,8 @@ bot = commands.Bot(description='Testing some stuff', command_prefix='t.')
 @bot.event
 async def on_ready():
 	print("Logged in as")
-	print(bot.user.name)
-	print(bot.user.id)
+	print('Name: {}'.format(bot.user.name))
+	print('ID:   {}'.format(bot.user.id))
 	print("----------")
 	
 	
@@ -24,4 +26,4 @@ if __name__ == "__main__":
 	
 	
 	
-bot.run("TOKEN")
+bot.run(__token__)
