@@ -1,6 +1,7 @@
 import datetime
 import discord
 from discord.ext import commands
+from cogs.tools.checks import *
 
 
 class AdminCog:
@@ -11,14 +12,17 @@ class AdminCog:
 	@commands.guild_only()
 	@commands.has_permissions(kick_members=True)
 	async def kick(self, ctx, mem: discord.Member = None, *Reason):
-		embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now())
-		if Reason:
-			Reason = ' '.join(Reason)
-			embed.add_field(name='Reason', value=Reason)
+		if hierarchy(ctx, mem):
+			embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now())
+			if Reason:
+				Reason = ' '.join(Reason)
+				embed.add_field(name='Reason', value=Reason)
+			else:
+				Reason = ''
+			await mem.send(embed=embed)
+			await mem.kick(reason=ctx.message.author.name + ' | ' + Reason)
 		else:
-			Reason = None
-		await mem.send(embed=embed)
-		await mem.kick(reason=ctx.message.author.name + ' | ' + Reason)
+			raise commands.UserInputError('{} has more or equal power to you.'.format(mem.name))
 
 	@commands.command()
 	@commands.is_owner()

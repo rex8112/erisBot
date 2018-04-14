@@ -25,7 +25,6 @@ async def on_command_completion(ctx):
 	embed.add_field(name="Full Command:", value="{}".format(ctx.message.content))
 
 	await log.send(embed=embed)
-
 	
 	
 if __name__ == "__main__":
@@ -35,7 +34,6 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-	
 	
 	
 bot.run(__token__)
