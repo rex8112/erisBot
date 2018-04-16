@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from config.config import __token__, __logid__
 
-startup_extensions = ['cogs.admin', 'cogs.utility']
+startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp']
 
 bot = commands.Bot(description='Testing some stuff', command_prefix='t.')
 
