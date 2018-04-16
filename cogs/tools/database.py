@@ -15,5 +15,11 @@ def addMem(mem: discord.Member):
 										 VALUES(?, ?)""", (name, id))
 		
 def updateXP(mem: discord.Member, amt):
-	id = mem.name
+	id = mem.id
 	cursor.execute( """UPDATE members SET totalXP = ? WHERE id = ?""", (amt, id))
+	
+def getXP(mem: discord.Member):
+	id = mem.id
+	cursor.execute( """SELECT totalXP FROM members WHERE id = ?""", (id))
+	xp = cursor.fetchone()
+	return xp[0]
