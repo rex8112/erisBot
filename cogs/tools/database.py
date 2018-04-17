@@ -6,7 +6,7 @@ cursor = db.cursor()
 
 def initDB():	
 	cursor.execute( """CREATE TABLE IF NOT EXISTS members( indx INTEGER PRIMARY KEY,
-		name TEXT, id INTEGER UNIQUE, totalXP INTEGER)""" )
+		name TEXT, id INTEGER UNIQUE, totalXP INTEGER DEFAULT 0)""" )
 	db.commit()
 		
 def addMem(mem: discord.Member):
