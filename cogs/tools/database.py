@@ -1,7 +1,7 @@
 import sqlite3
 import discord
 
-db = sqlite3.connect('eris.db')
+db = sqlite3.connect('erisData.db')
 cursor = db.cursor()
 
 def initDB():	
