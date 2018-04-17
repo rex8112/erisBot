@@ -17,7 +17,7 @@ class XP:
 			addMem(mem)
 			updateXP(mem, amt)
 	
-	@commands.command()
+	@commands.command(aliases=['getxp', 'getXP', 'retrievexp'])
 	@commands.guild_only()
 	async def retrieveXP(self, ctx, mem: discord.Member):
 		xp = getXP(mem)
