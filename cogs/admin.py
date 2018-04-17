@@ -1,4 +1,5 @@
 import datetime
+import pytz
 import discord
 from discord.ext import commands
 from cogs.tools.checks import *
@@ -13,7 +14,7 @@ class AdminCog:
 	@commands.has_permissions(ban_members=True)
 	async def ban(self, ctx, mem: discord.Member = None, *Reason):
 		if hierarchy(ctx, mem):
-			embed = discord.Embed(title="Banned", colour=discord.Colour(0x9013fe), description='You have been banned from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now())
+			embed = discord.Embed(title="Banned", colour=discord.Colour(0x9013fe), description='You have been banned from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			if type(Reason) is not NoneType:
 				Reason = ' '.join(Reason)
 				embed.add_field(name='Reason', value=Reason)
@@ -29,7 +30,7 @@ class AdminCog:
 	@commands.has_permissions(kick_members=True)
 	async def kick(self, ctx, mem: discord.Member = None, *Reason):
 		if hierarchy(ctx, mem):
-			embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now())
+			embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			if Reason:
 				Reason = ' '.join(Reason)
 				embed.add_field(name='Reason', value=Reason)
