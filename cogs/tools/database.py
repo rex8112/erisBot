@@ -29,3 +29,8 @@ def getXP(mem: discord.Member):
 		return xp[0]
 	else:
 		return None
+		
+def addXP(mem: discord.Member, amt)
+	curxp = getXP(mem)
+	newxp = curxp + amt
+	updateXP(mem, newxp)
