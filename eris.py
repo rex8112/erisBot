@@ -13,6 +13,10 @@ async def on_ready():
 	print('Name: {}'.format(bot.user.name))
 	print('ID:   {}'.format(bot.user.id))
 	print("----------")
+	for guild in bot.guilds:
+		print(guild.name)
+		print(guild.id)
+		print('----------')
 	
 @bot.event
 async def on_command_completion(ctx):
