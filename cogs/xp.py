@@ -8,20 +8,24 @@ class XP:
 		self.bot = bot
 		initDB()
 	
-	@commands.command()
+	@commands.group()
 	@commands.guild_only()
-	async def setXP(self, ctx, mem: discord.Member, amt: int):
+	async def xp(self, ctx):
+		if ctx.invoked_subcommand is None:
+			raise commands.UserInputError('Missing Subcommands')
+	
+	@xp.command()
+	async def get(self, ctx, mem: discord.Member):
+		xp = getXP(mem)
+		await ctx.send('{} has {} XP'.format(mem.name, xp))
+	
+	@xp.command()
+	async def set(self, ctx, mem: discord.Member, amt: int):
 		if getXP(mem):
 			updateXP(mem, amt)
 		elif getXP(mem) is None:
 			addMem(mem)
 			updateXP(mem, amt)
-	
-	@commands.command(aliases=['getxp', 'getXP', 'retrievexp'])
-	@commands.guild_only()
-	async def retrieveXP(self, ctx, mem: discord.Member):
-		xp = getXP(mem)
-		await ctx.send('{} has {} XP'.format(mem.name, xp))
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
