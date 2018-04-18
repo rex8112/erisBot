@@ -13,14 +13,17 @@ class XP:
 	@commands.guild_only()
 	async def xp(self, ctx):
 		if ctx.invoked_subcommand is None:
-			xp = getXP(ctx.author)
-			embed = discord.Embed(colour=discord.Colour(0x9013fe), description='You have **{}** XP'.format(xp))
+			mem = ctx.author
+			xp = getXP(mem)
+			lvl = getLVL(mem)
+			embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{}** is level **{}** and has **{}** XP'.format(mem.mention, lvl, xp))
 			await ctx.send(embed=embed)
 	
 	@xp.command()
 	async def get(self, ctx, mem: discord.Member):
 		xp = getXP(mem)
-		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{}** has **{}** XP'.format(mem.mention, xp))
+		lvl = getLVL(mem)
+		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{}** is level **{}** and has **{}** XP'.format(mem.mention, lvl, xp))
 		await ctx.send(embed=embed)
 	
 	@xp.command()
