@@ -34,8 +34,10 @@ def addXP(mem: discord.Member, amt):
 	curxp = getXP(mem)
 	newxp = curxp + amt
 	updateXP(mem, newxp)
+	return newxp
 	
 def remXP(mem: discord.Member, amt):
 	curxp = getXP(mem)
 	newxp = curxp - amt
 	updateXP(mem, newxp)
+	return newxp
