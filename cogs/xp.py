@@ -1,4 +1,5 @@
 import discord
+import random
 from discord.ext import commands
 from cogs.tools.database import *
 
@@ -31,12 +32,13 @@ class XP:
 	
 	async def on_message(self, ctx):
 		mem = ctx.author
+		amt = random.randint(10, 15)
 		if not mem.bot:
 			if getXP(mem):
-				addXP(mem, 1)
+				addXP(mem, amt)
 			else:
 				addMem(mem)
-				addXP(mem, 1)
+				addXP(mem, amt)
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
