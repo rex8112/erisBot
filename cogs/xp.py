@@ -29,11 +29,12 @@ class XP:
 	
 	async def on_message(self, ctx):
 		mem = ctx.author
-		if getXP(mem):
-			addXP(mem, 1)
-		else:
-			addMem(mem)
-			addXP(mem, 1)
+		if not mem.bot:
+			if getXP(mem):
+				addXP(mem, 1)
+			else:
+				addMem(mem)
+				addXP(mem, 1)
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
