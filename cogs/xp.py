@@ -17,7 +17,8 @@ class XP:
 	@xp.command()
 	async def get(self, ctx, mem: discord.Member):
 		xp = getXP(mem)
-		await ctx.send('{} has {} XP'.format(mem.name, xp))
+		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{}** has **{}** XP'.format(mem.mention, xp))
+		await ctx.send(embed=embed)
 	
 	@xp.command()
 	async def set(self, ctx, mem: discord.Member, amt: int):
