@@ -21,6 +21,7 @@ class XP:
 		await ctx.send(embed=embed)
 	
 	@xp.command()
+	@commands.is_owner()
 	async def set(self, ctx, mem: discord.Member, amt: int):
 		if getXP(mem):
 			updateXP(mem, amt)
