@@ -48,7 +48,9 @@ def getXP(mem: discord.Member):
 	if xp:
 		return xp[0]
 	else:
-		return None
+		print('DB: User Not Found, Adding Record')
+		addMem(mem)
+		return getXP(mem)
 		
 def addXP(mem: discord.Member, amt):
 	curxp = getXP(mem)

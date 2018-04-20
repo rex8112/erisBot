@@ -29,11 +29,8 @@ class XP:
 	@xp.command()
 	@commands.is_owner()
 	async def set(self, ctx, mem: discord.Member, amt: int):
-		if getXP(mem):
-			updateXP(mem, amt)
-		elif getXP(mem) is None:
-			addMem(mem)
-			updateXP(mem, amt)
+		getXP(mem)
+		updateXP(mem, amt)
 	
 	async def on_message(self, ctx):
 		mem = ctx.author
