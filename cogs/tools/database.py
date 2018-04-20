@@ -24,10 +24,10 @@ def updateXP(mem: discord.Member, amt): #Sets the XP of a member
 	
 def updateLVL(mem: discord.Member, xp): #Sets the lvl based on the XP given
 	id = mem.id
-	rxp = 500
+	rxp = 300
 	lvl = 1
 	while xp >= rxp:
-		rxp = rxp + 500 + (lvl * 100)
+		rxp = rxp + 300 + (lvl * 100)
 		lvl += 1
 	cursor.execute("""UPDATE members SET lvl = ? WHERE id = ? """, (lvl, id))
 	db.commit()
