@@ -41,7 +41,7 @@ class XP:
 			nlvl = getLVL(mem)
 			if olvl < nlvl:
 				print('{} leveled up'.format(mem))
-				embed = discord.Embed(title="Leveled Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have leveled up!\n**Level {}**".format(mem.mention, nlvl))
+				embed = discord.Embed(title="Leveled Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached **level {}**".format(mem.mention, nlvl))
 				embed.set_thumbnail(url=mem.avatar_url)
 				
 				await ctx.channel.send(embed=embed, delete_after=10.00)
