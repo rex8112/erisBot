@@ -31,11 +31,24 @@ class XP:
 	async def set(self, ctx, mem: discord.Member, amt: int):
 		getXP(mem)
 		updateXP(mem, amt)
+		await ctx.message.add_reaction('✅')
+	
+	@xp.command()
+	@commands.is_owner()
+	async def add(self, ctx, mem: discord.Member, amt: int):
+		addXP(mem, amt)
+		
+	@xp.command()
+	@commands.is_owner()
+	async def rem(self, ctx, mem: discord.Member, amt: int):
+		remXP(mem, amt)
 	
 	async def on_message(self, ctx): #XP Gain Via Messages
 		mem = ctx.author
 		if not mem.bot:
 			olvl = getLVL(mem)
+			if not olvl:
+				olvl = 1
 			amt = random.randint(10, 15)
 			addXP(mem, amt)
 			nlvl = getLVL(mem)
