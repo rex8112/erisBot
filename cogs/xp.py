@@ -32,15 +32,19 @@ class XP:
 		getXP(mem)
 		updateXP(mem, amt)
 	
-	async def on_message(self, ctx):
+	async def on_message(self, ctx): #XP Gain Via Messages
 		mem = ctx.author
-		amt = random.randint(10, 15)
 		if not mem.bot:
-			if getXP(mem):
-				addXP(mem, amt)
-			else:
-				addMem(mem)
-				addXP(mem, amt)
+			olvl = getLVL(mem)
+			amt = random.randint(10, 15)
+			addXP(mem, amt)
+			nlvl = getLVL(mem)
+			if olvl < nlvl:
+				print('{} leveled up'.format(mem))
+				embed = discord.Embed(title="Leveled Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have leveled up!\n**Level {}**".format(mem.mention, nlvl))
+				embed.set_thumbnail(url=mem.avatar_url)
+				
+				await ctx.channel.send(embed=embed, delete_after=10.00)
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
