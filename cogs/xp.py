@@ -47,8 +47,6 @@ class XP:
 		mem = ctx.author
 		if not mem.bot:
 			olvl = getLVL(mem)
-			if not olvl:
-				olvl = 1
 			amt = random.randint(10, 15)
 			addXP(mem, amt)
 			nlvl = getLVL(mem)

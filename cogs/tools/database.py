@@ -39,7 +39,7 @@ def getLVL(mem: discord.Member):
 	if lvl:
 		return lvl[0]
 	else:
-		return None
+		return 1
 	
 def getXP(mem: discord.Member):
 	id = mem.id
