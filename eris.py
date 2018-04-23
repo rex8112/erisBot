@@ -2,11 +2,11 @@ import datetime
 import pytz
 import discord
 from discord.ext import commands
-from config.config import __token__, __logid__
+from config.config import __token__, __logid__, __owner__
 
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp']
 
-bot = commands.Bot(description='Testing some stuff', command_prefix='t.')
+bot = commands.Bot(description='Testing some stuff', command_prefix='t.', owner_id=__owner__)
 
 @bot.event
 async def on_ready():
