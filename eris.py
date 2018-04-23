@@ -2,11 +2,11 @@ import datetime
 import pytz
 import discord
 from discord.ext import commands
-from config.config import __token__, __logid__
+from config.config import __token__, __logid__, __owner__
 
-startup_extensions = ['cogs.admin', 'cogs.utility']
+startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp']
 
-bot = commands.Bot(description='Testing some stuff', command_prefix='t.')
+bot = commands.Bot(description='Testing some stuff', command_prefix='t.', owner_id=__owner__)
 
 @bot.event
 async def on_ready():
@@ -14,6 +14,10 @@ async def on_ready():
 	print('Name: {}'.format(bot.user.name))
 	print('ID:   {}'.format(bot.user.id))
 	print("----------")
+	for guild in bot.guilds:
+		print(guild.name)
+		print(guild.id)
+		print('----------')
 	
 @bot.event
 async def on_command_completion(ctx):
@@ -26,6 +30,15 @@ async def on_command_completion(ctx):
 	embed.add_field(name="Full Command:", value="{}".format(ctx.message.content))
 
 	await log.send(embed=embed)
+	
+@bot.event
+async def on_message(ctx):
+	if not ctx.guild and not ctx.author.bot:
+		owner = bot.get_user(__owner__)
+		if ctx.author is not owner:
+			embed = discord.Embed(description=ctx.content, colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
+			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			await owner.send(embed=embed)
 	
 	
 if __name__ == "__main__":
