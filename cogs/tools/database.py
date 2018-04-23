@@ -48,7 +48,7 @@ def getXP(mem: discord.Member):
 	if xp:
 		return xp[0]
 	else:
-		print('DB: User Not Found, Adding Record')
+		print('DB: User \'{}\' Not Found, Adding Record'.format(mem))
 		addMem(mem)
 		return getXP(mem)
 		
