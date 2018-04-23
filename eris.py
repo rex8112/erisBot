@@ -31,6 +31,15 @@ async def on_command_completion(ctx):
 
 	await log.send(embed=embed)
 	
+@bot.event
+async def on_message(ctx):
+	if not ctx.guild and not ctx.author.bot:
+		owner = bot.get_user(__owner__)
+		if ctx.author is not owner:
+			embed = discord.Embed(description=ctx.content, colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
+			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			await owner.send(embed=embed)
+	
 	
 if __name__ == "__main__":
     for extension in startup_extensions:
