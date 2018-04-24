@@ -1,12 +1,14 @@
 import datetime
 import pytz
 import discord
+
+
 from discord.ext import commands
-from config.config import __token__, __logid__, __owner__
+from config.configLoader import settings
 
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events']
 
-bot = commands.Bot(description='Testing some stuff', command_prefix='t.', owner_id=__owner__)
+bot = commands.Bot(description='Testing some stuff', command_prefix='t.', owner_id=settings.owner)
 
 @bot.event
 async def on_ready():
@@ -29,4 +31,4 @@ if __name__ == "__main__":
             print('Failed to load extension {}\n{}'.format(extension, exc))
 	
 	
-bot.run(__token__)
+bot.run(settings.token)

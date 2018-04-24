@@ -6,7 +6,7 @@ import pytz
 
 from discord.ext import commands
 from cogs.tools.database import *
-from config.config import __owner__, __logid__
+from config.configLoader import settings
 
 class events:
 	def __init__(self, bot):
@@ -30,14 +30,14 @@ class events:
 					
 			#Messages Owner when receiving a DM
 			if not ctx.guild:
-				owner = self.bot.get_user(__owner__)
+				owner = self.bot.get_user(settings.owner)
 				if ctx.author is not owner:
 					embed = discord.Embed(description=ctx.content, colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 					embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
 					await owner.send(embed=embed)
 
 	async def on_command_completion(self, ctx):
-		log = self.bot.get_channel(__logid__)
+		log = self.bot.get_channel(settings.logid)
 		if log is None:
 			return
 			
