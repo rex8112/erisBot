@@ -37,7 +37,7 @@ class events:
 					await owner.send(embed=embed)
 
 	async def on_command_completion(self, ctx):
-		log = self.bot.get_channel(settings.logid)
+		log = self.bot.get_channel(int(settings.logid))
 		if log is None:
 			return
 			
