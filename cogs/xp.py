@@ -1,5 +1,4 @@
 import discord
-import random
 from discord.ext import commands
 from cogs.tools.database import *
 
@@ -45,19 +44,6 @@ class XP:
 		remXP(user, amt)
 		await ctx.message.add_reaction('✅')
 	
-	async def on_message(self, ctx): #XP Gain Via Messages
-		user = ctx.author
-		if not user.bot:
-			olvl = getLVL(user)
-			amt = random.randint(10, 15)
-			addXP(user, amt)
-			nlvl = getLVL(user)
-			if olvl < nlvl:
-				print('{} leveled up'.format(user))
-				embed = discord.Embed(title="Leveled Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached **level {}**".format(user.mention, nlvl))
-				embed.set_thumbnail(url=user.avatar_url)
-				
-				await ctx.channel.send(embed=embed, delete_after=10.00)
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
