@@ -14,6 +14,8 @@ class events:
 	async def on_message(self, ctx):
 		user = ctx.author
 		if not user.bot:
+		
+			#Adds XP per message in a Guild
 			if ctx.guild:
 				olvl = getLVL(user)
 				amt = random.randint(10, 15)
@@ -25,6 +27,8 @@ class events:
 					embed.set_thumbnail(url=user.avatar_url)
 					
 					await ctx.channel.send(embed=embed, delete_after=10.00)
+					
+			#Messages Owner when receiving a DM
 			if not ctx.guild:
 				owner = self.bot.get_user(__owner__)
 				if ctx.author is not owner:
