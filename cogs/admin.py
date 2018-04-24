@@ -12,34 +12,34 @@ class AdminCog:
 	@commands.command()
 	@commands.guild_only()
 	@commands.has_permissions(ban_members=True)
-	async def ban(self, ctx, mem: discord.Member = None, *Reason):
-		if hierarchy(ctx, mem):
+	async def ban(self, ctx, user: discord.Member = None, *Reason):
+		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Banned", colour=discord.Colour(0x9013fe), description='You have been banned from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			if type(Reason) is not NoneType:
 				Reason = ' '.join(Reason)
 				embed.add_field(name='Reason', value=Reason)
 			else:
 				Reason = ''
-			await mem.send(embed=embed)
-			await mem.ban(reason=ctx.message.author.name + ' | ' + Reason)
+			await user.send(embed=embed)
+			await user.ban(reason=ctx.message.author.name + ' | ' + Reason)
 		else:
-			raise commands.UserInputError('{} has more or equal power to you.'.format(mem.name))
+			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
 
 	@commands.command()
 	@commands.guild_only()
 	@commands.has_permissions(kick_members=True)
-	async def kick(self, ctx, mem: discord.Member = None, *Reason):
-		if hierarchy(ctx, mem):
+	async def kick(self, ctx, user: discord.Member = None, *Reason):
+		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			if Reason:
 				Reason = ' '.join(Reason)
 				embed.add_field(name='Reason', value=Reason)
 			else:
 				Reason = ''
-			await mem.send(embed=embed)
-			await mem.kick(reason=ctx.message.author.name + ' | ' + Reason)
+			await user.send(embed=embed)
+			await user.kick(reason=ctx.message.author.name + ' | ' + Reason)
 		else:
-			raise commands.UserInputError('{} has more or equal power to you.'.format(mem.name))
+			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
 
 	@commands.command()
 	@commands.is_owner()
@@ -57,9 +57,9 @@ class AdminCog:
 			
 	@commands.command()
 	@commands.is_owner()
-	async def sendp(self, ctx, player: discord.Member, *, content):
+	async def sendp(self, ctx, user: discord.Member, *, content):
 		try:
-			await player.send(content)
+			await user.send(content)
 		except:
 			await ctx.send(content='Sorry {0},\n{1} is not a valid Member.'.format(ctx.message.author.name, player, delete_after=5.00))
 

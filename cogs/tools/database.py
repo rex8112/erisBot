@@ -9,21 +9,21 @@ def initDB():	#initialize the database
 		name TEXT, id INTEGER UNIQUE, totalXP INTEGER DEFAULT 0, lvl INTEGER DEFAULT 1)""" )
 	db.commit()
 		
-def addMem(mem: discord.Member): #add a member record
-	name = mem.name
-	id = mem.id
+def addMem(user: discord.Member): #add a member record
+	name = user.name
+	id = user.id
 	cursor.execute( """INSERT INTO members(name, id)
 										 VALUES(?, ?)""", (name, id))
 	db.commit()
 		
-def updateXP(mem: discord.Member, amt): #Sets the XP of a member
-	id = mem.id
+def updateXP(user: discord.Member, amt): #Sets the XP of a member
+	id = user.id
 	cursor.execute( """UPDATE members SET totalXP = ? WHERE id = ?""", (amt, id))
 	db.commit()
-	updateLVL(mem, amt)
+	updateLVL(user, amt)
 	
-def updateLVL(mem: discord.Member, xp): #Sets the lvl based on the XP given
-	id = mem.id
+def updateLVL(user: discord.Member, xp): #Sets the lvl based on the XP given
+	id = user.id
 	rxp = 300
 	lvl = 1
 	while xp >= rxp:
@@ -32,8 +32,8 @@ def updateLVL(mem: discord.Member, xp): #Sets the lvl based on the XP given
 	cursor.execute("""UPDATE members SET lvl = ? WHERE id = ? """, (lvl, id))
 	db.commit()
 
-def getLVL(mem: discord.Member):
-	id = mem.id
+def getLVL(user: discord.Member):
+	id = user.id
 	cursor.execute( """SELECT lvl FROM members WHERE id = ?""", (id,))
 	lvl = cursor.fetchone()
 	if lvl:
@@ -41,25 +41,25 @@ def getLVL(mem: discord.Member):
 	else:
 		return 1
 	
-def getXP(mem: discord.Member):
-	id = mem.id
+def getXP(user: discord.Member):
+	id = user.id
 	cursor.execute( """SELECT totalXP FROM members WHERE id = ?""", (id,))
 	xp = cursor.fetchone()
 	if xp:
 		return xp[0]
 	else:
-		print('DB: User \'{}\' Not Found, Adding Record'.format(mem))
-		addMem(mem)
-		return getXP(mem)
+		print('DB: User \'{}\' Not Found, Adding Record'.format(user))
+		addMem(user)
+		return getXP(user)
 		
-def addXP(mem: discord.Member, amt):
-	curxp = getXP(mem)
+def addXP(user: discord.Member, amt):
+	curxp = getXP(user)
 	newxp = curxp + amt
-	updateXP(mem, newxp)
+	updateXP(user, newxp)
 	return newxp
 	
-def remXP(mem: discord.Member, amt):
-	curxp = getXP(mem)
+def remXP(user: discord.Member, amt):
+	curxp = getXP(user)
 	newxp = curxp - amt
-	updateXP(mem, newxp)
+	updateXP(user, newxp)
 	return newxp
