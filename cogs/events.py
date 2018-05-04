@@ -37,15 +37,18 @@ class events:
 					await owner.send(embed=embed)
 
 	async def on_command_completion(self, ctx):
-		log = self.bot.get_channel(int(settings.logid))
-		if log is None:
-			return
-			
-		embed = discord.Embed(title="{}".format(ctx.command), colour=discord.Colour(0x9013fe), description="in {}\nby {}".format(ctx.message.channel, ctx.message.author.mention), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
-		embed.set_author(name="Command Invoked")
-		embed.add_field(name="Full Command:", value="{}".format(ctx.message.content))
+		try:
+			log = self.bot.get_channel(int(settings.logid))
+			if log is None:
+				return
+				
+			embed = discord.Embed(title="{}".format(ctx.command), colour=discord.Colour(0x9013fe), description="in {}\nby {}".format(ctx.message.channel, ctx.message.author.mention), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
+			embed.set_author(name="Command Invoked")
+			embed.add_field(name="Full Command:", value="{}".format(ctx.message.content))
 
-		await log.send(embed=embed)
+			await log.send(embed=embed)
+		except ValueError:
+			return
 		
 	async def on_command_error(self, ctx, error):
 		if isinstance(error, commands.NoPrivateMessage):
