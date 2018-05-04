@@ -47,5 +47,13 @@ class events:
 
 		await log.send(embed=embed)
 		
+	async def on_command_error(self, ctx, error):
+		if isinstance(error, commands.NoPrivateMessage):
+			print(error)
+			await ctx.send('[NoPrivateMessage] Sorry. This command is not allow in private messages.')
+		else:
+			print(error)
+			await ctx.send(content=error, delete_after=5.00)
+		
 def setup(bot):
 	bot.add_cog(events(bot))
