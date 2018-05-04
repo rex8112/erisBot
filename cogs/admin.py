@@ -43,7 +43,20 @@ class AdminCog:
 			await user.kick(reason=ctx.message.author.name + ' | ' + Reason)
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
-
+			
+	@commands.command()
+	@commands.guild_only()
+	@commands.has_permissions(ban_members=True)
+	async def warn(self, ctx, user: discord.Member, *, Reason):
+		if hierarchy(ctx, user):
+			embed = discord.Embed(title="Warning", colour=discord.Colour(0x9013fe), description=Reason, timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
+			embed.set_author(name=ctx.guild, icon_url=ctx.guild.icon_url)
+			#embed.add_field(name='Reason', value=Reason)
+			
+			await user.send(embed=embed)
+		else:
+			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
+			
 	@commands.command()
 	@commands.is_owner()
 	async def say(self, ctx, *, content):
