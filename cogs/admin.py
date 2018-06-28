@@ -51,7 +51,7 @@ class AdminCog:
 		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Warning", colour=discord.Colour(0x9013fe), description=Reason, timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			embed.set_author(name=ctx.guild, icon_url=ctx.guild.icon_url)
-			#embed.add_field(name='Reason', value=Reason)
+			embed.add_field(name='Reason', value=Reason)
 			
 			await user.send(embed=embed)
 		else:
