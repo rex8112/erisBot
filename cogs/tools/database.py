@@ -9,7 +9,7 @@ class database:
 		cursor.execute( """CREATE TABLE IF NOT EXISTS members( indx INTEGER PRIMARY KEY,
 			name TEXT, id INTEGER UNIQUE, totalXP INTEGER DEFAULT 0, lvl INTEGER DEFAULT 1)""" )
 		
-		cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, user TEXT, id INTEGER, reason TEXT, state INTEGER DEFAULT 0)""")
+		cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, name TEXT, id INTEGER, reason TEXT, state INTEGER DEFAULT 0)""")
 		db.commit()
 			
 	def addMem(user: discord.Member): #add a member record
@@ -66,3 +66,9 @@ class database:
 		newxp = curxp - amt
 		database.updateXP(user, newxp)
 		return newxp
+		
+	def addWarn(user: discord.Member, reason):
+		name = user.name
+		id = user.id
+		cursor.execute("""INSERT INTO warnings(name, id, reason) VALUES(?, ?, ?)""", (name, id, reason))
+		db.commit()
