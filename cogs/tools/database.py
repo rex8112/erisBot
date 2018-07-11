@@ -72,3 +72,9 @@ class database:
 		id = user.id
 		cursor.execute("""INSERT INTO warnings(name, id, reason) VALUES(?, ?, ?)""", (name, id, reason))
 		db.commit()
+		
+	def getWarn(user: discord.Member):
+		id = user.id
+		cursor.execute("""SELECT * FROM warnings WHERE id = ?""", (id,))
+		warns = cursor.fetchall()
+		return warns
