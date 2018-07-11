@@ -56,7 +56,9 @@ class events:
 			await ctx.send('[NoPrivateMessage] Sorry. This command is not allow in private messages.')
 		else:
 			print(error)
-			await ctx.send(content=error, delete_after=5.00)
+			embed = discord.Embed(title="Error", colour=discord.Colour(0xd0021b), description=str(error))
+			embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=embed, delete_after=5.00)
 		
 def setup(bot):
 	bot.add_cog(events(bot))
