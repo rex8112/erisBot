@@ -60,6 +60,18 @@ class AdminCog:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
 	@commands.command()
+	@commands.guild_only()
+	@commands.has_permissions(ban_members=True)
+	async def warnings(self, ctx, user: discord.Member, *page):
+		warns = db.getWarn(user)
+		embed = discord.Embed(title="Warnings", colour=discord.Colour(0x9013fe))
+		embed.set_author(name=user.name, icon_url=user.avatar_url)
+		for warn in warns:
+			embed.add_field(name="{} - {}".format(warn[0], warn[4]), value=warn[3], inline=False)
+		
+		await ctx.send(embed=embed)
+		
+	@commands.command()
 	@commands.is_owner()
 	async def say(self, ctx, *, content):
 		await ctx.send(content)
