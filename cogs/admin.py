@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 from cogs.tools.checks import *
 from config.configLoader import settings
+from cogs.tools.database import database as db
 
 
 class AdminCog:
@@ -54,6 +55,7 @@ class AdminCog:
 			embed.add_field(name='Reason', value=Reason)
 			
 			await user.send(embed=embed)
+			db.addWarn(user, Reason)
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
