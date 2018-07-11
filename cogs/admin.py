@@ -26,7 +26,7 @@ class AdminCog:
 			await user.send(embed=embed)
 			await user.ban(reason=ctx.message.author.name + ' | ' + Reason)
 		else:
-			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
+			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 
 	@commands.command()
 	@commands.guild_only()
@@ -42,7 +42,7 @@ class AdminCog:
 			await user.send(embed=embed)
 			await user.kick(reason=ctx.message.author.name + ' | ' + Reason)
 		else:
-			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
+			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
 	@commands.command()
 	@commands.guild_only()
@@ -55,7 +55,7 @@ class AdminCog:
 			
 			await user.send(embed=embed)
 		else:
-			raise commands.UserInputError('{} has more or equal power to you.'.format(user.name))
+			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
 	@commands.command()
 	@commands.is_owner()
