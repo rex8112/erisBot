@@ -8,7 +8,7 @@ from config.configLoader import settings
 
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events']
 
-bot = commands.Bot(description='Testing some stuff', command_prefix='t.', owner_id=int(settings.owner))
+bot = commands.Bot(description='Testing some stuff', command_prefix='.', owner_id=int(settings.owner))
 
 @bot.event
 async def on_ready():
