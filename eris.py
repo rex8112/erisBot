@@ -20,6 +20,8 @@ async def on_ready():
 		print(guild.name)
 		print(guild.id)
 		print('----------')
+	game = discord.Activity(name='mortals', type=discord.ActivityType.listening)
+	await bot.change_presence(status=discord.Status.idle, activity=game)
 	
 	
 if __name__ == "__main__":
