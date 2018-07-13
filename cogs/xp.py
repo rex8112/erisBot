@@ -11,6 +11,7 @@ class XP:
 	@commands.group()
 	@commands.guild_only()
 	async def xp(self, ctx):
+		"""Retrieves your current XP and level"""
 		if ctx.invoked_subcommand is None:
 			user = ctx.author
 			xp = db.getXP(user)

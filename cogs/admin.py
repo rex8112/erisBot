@@ -63,6 +63,7 @@ class AdminCog:
 	@commands.guild_only()
 	@commands.has_permissions(ban_members=True)
 	async def warnings(self, ctx, user: discord.Member, *page):
+		"""Lists the current warnings a user has"""
 		warns = db.getWarn(user)
 		embed = discord.Embed(title="Warnings", colour=discord.Colour(0x9013fe))
 		embed.set_author(name=user.name, icon_url=user.avatar_url)
@@ -74,12 +75,14 @@ class AdminCog:
 	@commands.command()
 	@commands.is_owner()
 	async def say(self, ctx, *, content):
+		"""Makes the bot say something"""
 		await ctx.send(content)
 		await ctx.message.delete()
 	
 	@commands.command()
 	@commands.is_owner()
 	async def send(self, ctx, channel: discord.TextChannel, *, content):
+		"""Makes the bot say something somewhere else"""
 		try:
 			await channel.send(content)
 		except:
@@ -88,6 +91,7 @@ class AdminCog:
 	@commands.command()
 	@commands.is_owner()
 	async def sendp(self, ctx, user: discord.Member, *, content):
+		"""Makes the bot say something to someone"""
 		try:
 			await user.send(content)
 		except:
@@ -96,6 +100,7 @@ class AdminCog:
 	@commands.command()
 	@commands.is_owner()
 	async def setname(self, ctx, new: str):
+		"""Changes the username of the bot"""
 		await bot.user.edit(username=new)
 		
 	@commands.command()
