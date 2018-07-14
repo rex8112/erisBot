@@ -16,7 +16,8 @@ class AdminCog:
 	@commands.command()
 	@commands.guild_only()
 	@commands.has_permissions(ban_members=True)
-	async def ban(self, ctx, user: discord.Member = None, *Reason):
+	async def ban(self, ctx, user: discord.Member, *Reason):
+		"""Bans a user from the server"""
 		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Banned", colour=discord.Colour(0x9013fe), description='You have been banned from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			if type(Reason) is not NoneType:
@@ -32,7 +33,8 @@ class AdminCog:
 	@commands.command()
 	@commands.guild_only()
 	@commands.has_permissions(kick_members=True)
-	async def kick(self, ctx, user: discord.Member = None, *Reason):
+	async def kick(self, ctx, user: discord.Member, *Reason):
+		"""Kicks a user from the server"""
 		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Kicked", colour=discord.Colour(0x9013fe), description='You have been kicked from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			if Reason:
