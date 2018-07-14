@@ -56,6 +56,7 @@ class AdminCog:
 			
 			await user.send(embed=embed)
 			db.addWarn(user, Reason, ctx.author)
+			await ctx.message.add_reaction('✅')
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
