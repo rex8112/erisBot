@@ -72,7 +72,7 @@ class database:
 	def addWarn(user: discord.Member, reason, warner: discord.Member):
 		name = user.name
 		id = user.id
-		wid = warmer.id
+		wid = warner.id
 		today = datetime.date.today()
 		cursor.execute("""INSERT INTO warnings(name, id, reason, warnerid, date) VALUES(?, ?, ?, ?, ?)""", (name, id, reason, wid, today))
 		db.commit()
