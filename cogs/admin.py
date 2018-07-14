@@ -9,7 +9,7 @@ from config.configLoader import settings
 from cogs.tools.database import database as db
 
 
-class AdminCog:
+class Admin:
 	def __init__(self, bot):
 		self.bot = bot
 		
@@ -124,4 +124,4 @@ class AdminCog:
 		
 		
 def setup(bot):
-	bot.add_cog(AdminCog(bot))
+	bot.add_cog(Admin(bot))
