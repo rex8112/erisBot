@@ -10,20 +10,25 @@ class UtilityCog:
 	@commands.guild_only()
 	async def ping(self, ctx):
 		"""Makes the bot Pong"""
-		await ctx.send('Pong!')
+		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='Pong!')
+		await ctx.send(embed=embed)
 	
 	@commands.command()
 	@commands.guild_only()
 	async def joined(self, ctx, member: discord.Member):
 		"""Says when a user joined"""
-		await ctx.send('{0.name} joined in {0.joined_at}'.format(member))
+		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='{0.mention} joined in {0.joined_at}'.format(member))
+		embed.set_author(name=member.name, icon_url=member.avatar_url)
+		await ctx.send(embed=embed)
 	
 	@commands.command()
 	@commands.guild_only()
 	async def users(self, ctx):
 		"""Lists User Count"""
 		usrs = ctx.guild.member_count
-		await ctx.send('{0} mortals exist in this Dimension'.format(usrs))
+		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{0}** mortals exist in this Dimension'.format(usrs))
+		embed.set_author(name=ctx.guild, icon_url=ctx.guild.icon_url)
+		await ctx.send(embed=embed)
 		
 		
 def setup(bot):
