@@ -65,10 +65,16 @@ class AdminCog:
 	async def warnings(self, ctx, user: discord.Member, *page):
 		"""Lists the current warnings a user has"""
 		warns = db.getWarn(user)
+		
 		embed = discord.Embed(title="Warnings", colour=discord.Colour(0x9013fe))
 		embed.set_author(name=user.name, icon_url=user.avatar_url)
 		for warn in warns:
-			embed.add_field(name="{} - {}".format(warn[0], warn[4]), value=warn[3], inline=False)
+			indx = warn[0]
+			date = warn[5]
+			reason = warn[3]
+			warner = self.bot.get_user(warn[4])
+			
+			embed.add_field(name="{}: {} - {}".format(indx, str(warner), date), value=reason, inline=False)
 		
 		await ctx.send(embed=embed)
 		
