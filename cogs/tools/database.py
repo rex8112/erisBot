@@ -11,7 +11,7 @@ class database:
 		cursor.execute( """CREATE TABLE IF NOT EXISTS members( indx INTEGER PRIMARY KEY,
 			name TEXT, id INTEGER UNIQUE, totalXP INTEGER DEFAULT 0, lvl INTEGER DEFAULT 1)""" )
 		
-		cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, name TEXT, id INTEGER, reason TEXT, date TEXT, state INTEGER DEFAULT 0)""")
+		cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, name TEXT, id INTEGER, reason TEXT, warnerid INTEGER, date TEXT, state INTEGER DEFAULT 0)""")
 		db.commit()
 			
 	def addMem(user: discord.Member): #add a member record
@@ -69,11 +69,12 @@ class database:
 		database.updateXP(user, newxp)
 		return newxp
 		
-	def addWarn(user: discord.Member, reason):
+	def addWarn(user: discord.Member, reason, warner: discord.Member):
 		name = user.name
 		id = user.id
+		wid = warmer.id
 		today = datetime.date.today()
-		cursor.execute("""INSERT INTO warnings(name, id, reason, date) VALUES(?, ?, ?, ?)""", (name, id, reason, today))
+		cursor.execute("""INSERT INTO warnings(name, id, reason, warnerid, date) VALUES(?, ?, ?, ?, ?)""", (name, id, reason, wid, today))
 		db.commit()
 		
 	def getWarn(user: discord.Member):
