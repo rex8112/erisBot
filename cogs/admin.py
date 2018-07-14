@@ -55,7 +55,7 @@ class AdminCog:
 			embed.add_field(name='Reason', value=Reason)
 			
 			await user.send(embed=embed)
-			db.addWarn(user, Reason)
+			db.addWarn(user, Reason, ctx.author)
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
