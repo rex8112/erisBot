@@ -22,7 +22,7 @@ class UtilityCog:
 	@commands.guild_only()
 	async def users(self, ctx):
 		"""Lists User Count"""
-		usrs = len(bot.users)
+		usrs = ctx.guild.member_count
 		await ctx.send('{0} mortals exist in this Dimension'.format(usrs))
 		
 		
