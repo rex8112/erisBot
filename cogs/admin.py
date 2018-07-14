@@ -74,6 +74,8 @@ class AdminCog:
 			date = warn[5]
 			reason = warn[3]
 			warner = self.bot.get_user(warn[4])
+			if not warner:
+				warner = "Unknown"
 			
 			embed.add_field(name="{}: {} - {}".format(indx, str(warner), date), value=reason, inline=False)
 		
