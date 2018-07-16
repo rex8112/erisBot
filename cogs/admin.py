@@ -51,6 +51,7 @@ class Admin:
 	@commands.guild_only()
 	@commands.has_permissions(ban_members=True)
 	async def warn(self, ctx, user: discord.Member, *, Reason):
+		"""Issues and Records a warning to a user"""
 		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Warning", colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 			embed.set_author(name=ctx.guild, icon_url=ctx.guild.icon_url)
