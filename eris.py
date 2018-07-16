@@ -6,9 +6,9 @@ import discord
 from discord.ext import commands
 from config.configLoader import settings
 
-startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events']
+startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme']
 
-bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner))
+bot = commands.Bot(description='Created by rex8112', command_prefix='t.', owner_id=int(settings.owner))
 
 @bot.event
 async def on_ready():
