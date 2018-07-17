@@ -16,7 +16,13 @@ class XP:
 			user = ctx.author
 			xp = db.getXP(user)
 			lvl = db.getLVL(user)
+			goal = 300 + (lvl * 100)
+			remaining = goal - xp
 			embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{}** is level **{}** and has **{}** XP'.format(user.mention, lvl, xp))
+			if remaining <= 0:
+				embed.add_field(name = 'Can Level Up', value = '**{}** XP Required'.format(goal))
+			else:
+				embed.add_field(name = 'Next Level Up', value = '**{}** XP Remaining'.format(remaining))
 			await ctx.send(embed=embed)
 	
 	@xp.command()
@@ -49,6 +55,25 @@ class XP:
 		db.remXP(user, amt)
 		await ctx.message.add_reaction('✅')
 	
+	@commands.command()
+	@commands.guild_only()
+	async def levelup(self, ctx):
+		user = ctx.author
+		xp = db.getXP(user)
+		lvl = db.getLVL(user)
+		goal = 300 + (lvl * 100)
+		if xp >= goal:
+			lvl = db.addLVL(user, 1)
+			xp = db.remXP(user, goal)
+			embed = discord.Embed(title='Leveled Up', colour=discord.Colour(0x9013fe), description='You have spent **{}** XP and acquired level **{}**!'.format(goal, lvl))
+			goal = 300 + (lvl * 100)
+		else:
+			embed = discord.Embed(title='Failed to Level Up', colour=discord.Colour(0xd0021b), description='You do not have enough XP')
+		embed.add_field(name='Current XP', value='**{}**'.format(xp), inline=True)
+		embed.add_field(name='Current Level', value='**{}**'.format(lvl), inline=True)
+		embed.add_field(name='To Level Up', value='**{}** XP'.format(goal), inline=True)
+		embed.set_author(name=user.name, icon_url=user.avatar_url)
+		await ctx.send(embed=embed)
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
