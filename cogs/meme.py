@@ -22,7 +22,7 @@ class Meme:
 		quote = m.random()
 		embed = discord.Embed(title='Quote Number: {}'.format(quote[0]), colour=discord.Colour(0x9013fe), description=quote[1])
 		matthew = ctx.guild.get_member(106893131978395648)
-		embed.set_author(name=matthew, icon_url=matthew.avatar_url)
+		embed.set_author(name=matthew.name, icon_url=matthew.avatar_url)
 		await ctx.send(embed=embed)
 		
 def setup(bot):
