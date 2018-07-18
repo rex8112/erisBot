@@ -1,14 +1,19 @@
 import datetime
 import pytz
 import discord
+import asyncio
 
 
 from discord.ext import commands
 from config.configLoader import settings
+from cogs.tools.database import database as db
 
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme']
 
 bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner))
+
+game = discord.Activity(name='mortals', type=discord.ActivityType.listening)
+startPresence = bot.change_presence(status=discord.Status.idle, activity=game)
 
 @bot.event
 async def on_ready():
@@ -20,8 +25,42 @@ async def on_ready():
 		print(guild.name)
 		print(guild.id)
 		print('----------')
-	game = discord.Activity(name='mortals', type=discord.ActivityType.listening)
-	await bot.change_presence(status=discord.Status.idle, activity=game)
+	await startPresence
+	bg_task = bot.loop.create_task(degrade())
+
+async def degrade():
+	while True:
+		now = datetime.datetime.now()
+		then = (now + datetime.timedelta(days=1)).replace(hour = 0, minute = 0, second = 0)
+		delta = then - now
+		print(delta)
+		secs = delta.seconds
+		print(secs)
+		await asyncio.sleep(secs)
+		
+		users = db.getAllUsers()
+		for user in users: #Iterates through all users
+			lvl = user[4]
+			xp = user[3]
+			id = user[2]
+			user = bot.get_user(id)
+			amt = 10 + (lvl * 1)
+			
+			if lvl <= 0 and xp - amt < 0: #If running out of XP with no levels to sell
+				db.updateXP(user, 0)
+			elif xp - amt < 0: #If running out of XP with levels to sell
+				lvl = lvl - 1
+				sell = 300 + (lvl * 100)
+				remain = amt - xp
+				xp = sell - remain
+				db.updateLVL(user, lvl)
+				db.updateXP(user, xp)
+				
+				embed = discord.Embed(title = 'Level Lost', colour = discord.Colour(0xd0021b), description = 'Due to low-activity you have lost a level and are now Level **{}**'.format(lvl))
+				await user.send(embed=embed)
+			else: #Only remaining option is there is XP left to take
+				db.remXP(user, amt)
+		
 	
 	
 if __name__ == "__main__":
