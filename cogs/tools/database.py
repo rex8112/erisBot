@@ -65,6 +65,11 @@ class database:
 		database.updateXP(user, newxp)
 		return newxp
 		
+	def getAllUsers():
+		cursor.execute("""SELECT * FROM members""")
+		return cursor.fetchall()
+		
+		
 	def addLVL(user: discord.Member, amt):
 		curlvl = database.getLVL(user)
 		newlvl = curlvl + amt
