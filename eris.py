@@ -13,7 +13,7 @@ startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'c
 bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner))
 
 game = discord.Activity(name='mortals', type=discord.ActivityType.listening)
-startPresence = bot.change_presence(status=discord.Status.idle, activity=game)
+startPresence = bot.change_presence(status=discord.Status.online, activity=game)
 
 @bot.event
 async def on_ready():
