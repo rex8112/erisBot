@@ -32,7 +32,7 @@ class events:
 					
 			#Messages Owner when receiving a DM
 			if not ctx.guild:
-				owner = self.bot.get_user(settings.owner)
+				owner = self.bot.get_user(int(settings.owner))
 				if ctx.author is not owner:
 					embed = discord.Embed(description=ctx.content, colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
 					embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
