@@ -30,7 +30,13 @@ class XP:
 		"""Get the XP of another User"""
 		xp = db.getXP(user)
 		lvl = db.getLVL(user)
+		goal = 300 + (lvl * 100)
+		remaining = goal - xp
 		embed = discord.Embed(colour=discord.Colour(0x9013fe), description='**{}** is level **{}** and has **{}** {}'.format(user.mention, lvl, xp, self.xpName))
+		if remaining <= 0:
+			embed.add_field(name = 'Can Level Up', value = '**{}** {} Required'.format(goal, self.xpName))
+		else:
+			embed.add_field(name = 'Next Level Up', value = '**{}** {} Remaining'.format(remaining, self.xpName))
 		await ctx.send(embed=embed)
 	
 	@xp.command()
