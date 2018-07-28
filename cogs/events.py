@@ -6,6 +6,7 @@ import pytz
 
 from discord.ext import commands
 from cogs.tools.database import database as db
+from cogs.xp import XP as XP
 from config.configLoader import settings
 
 class events:
@@ -17,13 +18,14 @@ class events:
 		
 			#Adds XP per message in a Guild
 			if ctx.guild:
-				olvl = db.getLVL(user)
+				lvl = db.getLVL(user)
+				oxp = db.getXP(user)
 				amt = random.randint(10, 15)
 				db.addXP(user, amt)
-				nlvl = db.getLVL(user)
-				if olvl < nlvl:
-					print('{} leveled up'.format(user))
-					embed = discord.Embed(title="Leveled Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached **level {}**".format(user.mention, nlvl))
+				nxp = db.getXP(user)
+				goal = 300 + (lvl * 100)
+				if oxp < goal and nxp >= goal:
+					embed = discord.Embed(title="Can Level Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached enough **{}** to **level up**".format(user.mention, XP.xpName))
 					embed.set_thumbnail(url=user.avatar_url)
 					
 					await ctx.channel.send(embed=embed, delete_after=10.00)

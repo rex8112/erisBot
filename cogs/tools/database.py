@@ -9,7 +9,7 @@ cursor = db.cursor()
 class database:
 	def initDB():	#initialize the database
 		cursor.execute( """CREATE TABLE IF NOT EXISTS members( indx INTEGER PRIMARY KEY,
-			name TEXT, id INTEGER UNIQUE, totalXP INTEGER DEFAULT 0, lvl INTEGER DEFAULT 1)""" )
+			name TEXT, id INTEGER UNIQUE, xp INTEGER DEFAULT 0, lvl INTEGER DEFAULT 0)""" )
 		
 		cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, name TEXT, id INTEGER, reason TEXT, warnerid INTEGER, date TEXT, state INTEGER DEFAULT 0)""")
 		db.commit()
@@ -21,19 +21,13 @@ class database:
 											 VALUES(?, ?)""", (name, id))
 		db.commit()
 			
-	def updateXP(user: discord.Member, amt): #Sets the XP of a member
+	def updateXP(user: discord.Member, amt): #Sets the XP of a user
 		id = user.id
-		cursor.execute( """UPDATE members SET totalXP = ? WHERE id = ?""", (amt, id))
+		cursor.execute( """UPDATE members SET xp = ? WHERE id = ?""", (amt, id))
 		db.commit()
-		database.updateLVL(user, amt)
 		
-	def updateLVL(user: discord.Member, xp): #Sets the lvl based on the XP given
+	def updateLVL(user: discord.Member, lvl): #Sets the lvl of a user
 		id = user.id
-		rxp = 300
-		lvl = 1
-		while xp >= rxp:
-			rxp = rxp + 300 + (lvl * 100)
-			lvl += 1
 		cursor.execute("""UPDATE members SET lvl = ? WHERE id = ? """, (lvl, id))
 		db.commit()
 
@@ -44,11 +38,13 @@ class database:
 		if lvl:
 			return lvl[0]
 		else:
-			return 1
+			print('DB: User \'{}\' Not Found, Adding Record'.format(user))
+			database.addMem(user)
+			return database.getLVL(user)
 		
 	def getXP(user: discord.Member):
 		id = user.id
-		cursor.execute( """SELECT totalXP FROM members WHERE id = ?""", (id,))
+		cursor.execute( """SELECT xp FROM members WHERE id = ?""", (id,))
 		xp = cursor.fetchone()
 		if xp:
 			return xp[0]
@@ -68,6 +64,23 @@ class database:
 		newxp = curxp - amt
 		database.updateXP(user, newxp)
 		return newxp
+		
+	def getAllUsers():
+		cursor.execute("""SELECT * FROM members""")
+		return cursor.fetchall()
+		
+		
+	def addLVL(user: discord.Member, amt):
+		curlvl = database.getLVL(user)
+		newlvl = curlvl + amt
+		database.updateLVL(user, newlvl)
+		return newlvl
+		
+	def remLVL(user: discord.Member, amt):
+		curlvl = database.getLVL(user)
+		newlvl = curlvl - amt
+		database.updateLVL(user, newlvl)
+		return newlvl
 		
 	def addWarn(user: discord.Member, reason, warner: discord.Member):
 		name = user.name
