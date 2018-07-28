@@ -97,6 +97,7 @@ class Admin:
 		"""Makes the bot say something somewhere else"""
 		try:
 			await channel.send(content)
+			await ctx.message.add_reaction('✅')
 		except:
 			await ctx.send(content='Sorry {0},\n{1} is not a valid channel.'.format(ctx.message.author.name, channel), delete_after=5.00)
 			
@@ -106,6 +107,7 @@ class Admin:
 		"""Makes the bot say something to someone"""
 		try:
 			await user.send(content)
+			await ctx.message.add_reaction('✅')
 		except:
 			await ctx.send(content='Sorry {0},\n{1} is not a valid Member.'.format(ctx.message.author.name, player, delete_after=5.00))
 
