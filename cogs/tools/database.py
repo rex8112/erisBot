@@ -95,3 +95,9 @@ class database:
 		cursor.execute("""SELECT * FROM warnings WHERE id = ?""", (id,))
 		warns = cursor.fetchall()
 		return warns
+		
+	def leaderboard():
+		cursor.execute("""SELECT id, lvl, xp FROM members ORDER BY lvl DESC, xp DESC LIMIT 10""")
+		users = cursor.fetchall()
+		return users
+		

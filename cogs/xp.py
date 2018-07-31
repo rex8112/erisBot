@@ -80,6 +80,21 @@ class XP:
 		embed.add_field(name='To Level Up', value='**{}** {}'.format(goal, self.xpName), inline=True)
 		embed.set_author(name=user.name, icon_url=user.avatar_url)
 		await ctx.send(embed=embed)
+		
+	@commands.command()
+	@commands.guild_only()
+	async def leaderboard(self, ctx):
+		users = db.leaderboard()
+		embed = discord.Embed(title='Leaderboard', colour=discord.Colour(0x9013fe))
+		count = 0
+		
+		for user in users:
+			count += 1
+			usr = self.bot.get_user(user[0])
+			embed.add_field(name='{0} - {1}'.format(count, str(usr)), value='Level: **{0:5d}**\n{1}: **{2:5d}**'.format(user[1], self.xpName, user[2]), inline=True)
+		
+		await ctx.send(embed=embed)
+		
 	
 def setup(bot):
 	bot.add_cog(XP(bot))
