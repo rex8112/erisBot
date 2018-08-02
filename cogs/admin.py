@@ -1,6 +1,7 @@
 import datetime
 import pytz
 import discord
+import logging
 
 
 from discord.ext import commands
@@ -8,6 +9,7 @@ from cogs.tools.checks import *
 from config.configLoader import settings
 from cogs.tools.database import database as db
 
+logger = logging.getLogger('admin')
 
 class Admin:
 	def __init__(self, bot):
@@ -27,6 +29,7 @@ class Admin:
 				Reason = ''
 			await user.send(embed=embed)
 			await user.ban(reason=ctx.message.author.name + ' | ' + Reason)
+			logger.warning('{} Banned {}'.format(ctx.author, user))
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 
@@ -44,6 +47,7 @@ class Admin:
 				Reason = ''
 			await user.send(embed=embed)
 			await user.kick(reason=ctx.message.author.name + ' | ' + Reason)
+			logger.warning('{} Kicked {}'.format(ctx.author, user))
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
@@ -60,6 +64,7 @@ class Admin:
 			await user.send(embed=embed)
 			db.addWarn(user, Reason, ctx.author)
 			await ctx.message.add_reaction('✅')
+			logger.warning('{} Warned {}'.format(ctx.author, user))
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
 			
@@ -116,6 +121,7 @@ class Admin:
 	async def setname(self, ctx, new: str):
 		"""Changes the username of the bot"""
 		await bot.user.edit(username=new)
+		logger.info('Bot name set to: {}'.format(new))
 		
 	@commands.command()
 	@commands.is_owner()
