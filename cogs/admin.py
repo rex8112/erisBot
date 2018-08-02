@@ -22,7 +22,7 @@ class Admin:
 		"""Bans a user from the server"""
 		if hierarchy(ctx, user):
 			embed = discord.Embed(title="Banned", colour=discord.Colour(0x9013fe), description='You have been banned from **' + ctx.guild.name + '**', timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')))
-			if type(Reason) is not NoneType:
+			if Reason:
 				Reason = ' '.join(Reason)
 				embed.add_field(name='Reason', value=Reason)
 			else:
