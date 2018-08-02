@@ -2,6 +2,7 @@ import datetime
 import pytz
 import discord
 import asyncio
+import logging
 
 
 from discord.ext import commands
@@ -15,6 +16,9 @@ bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_i
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
 startPresence = bot.change_presence(status=discord.Status.online, activity=game)
 
+logging.basicConfig(filename='events.log', level=logging.INFO, format='%(asctime)s | %(name)s | %(levelname)s | %(message)s', datefmt='%m/%d/%Y %H:%M:%S')
+logger = logging.getLogger('core')
+
 @bot.event
 async def on_ready():
 	print("Logged in as")
@@ -27,6 +31,7 @@ async def on_ready():
 		print('----------')
 	await startPresence
 	bg_task = bot.loop.create_task(degrade())
+	logger.info('----- Bot Startup Complete -----')
 
 async def degrade():
 	while True:
@@ -58,9 +63,10 @@ async def degrade():
 				
 				embed = discord.Embed(title = 'Level Lost', colour = discord.Colour(0xd0021b), description = 'Due to low-activity you have lost a level and are now Level **{}**'.format(lvl))
 				await user.send(embed=embed)
-				print('DB: Removing Level: {}'.format(usr))
+				logger.info('Removing Level: {}'.format(usr))
 			else: #Only remaining option is there is XP left to take
 				db.remXP(usr, amt)
+				logger.debug('Removing {} XP from {}'.format(amt, usr))
 		
 	
 	

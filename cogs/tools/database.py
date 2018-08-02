@@ -1,10 +1,12 @@
 import datetime
 import sqlite3
 import discord
+import logging
 
 
 db = sqlite3.connect('erisData.db')
 cursor = db.cursor()
+logger = logging.getLogger('database')
 
 class database:
 	def initDB():	#initialize the database
@@ -20,16 +22,19 @@ class database:
 		cursor.execute( """INSERT INTO members(name, id)
 											 VALUES(?, ?)""", (name, id))
 		db.commit()
+		logger.info('{} Added to Database'.format(user))
 			
 	def updateXP(user: discord.Member, amt): #Sets the XP of a user
 		id = user.id
 		cursor.execute( """UPDATE members SET xp = ? WHERE id = ?""", (amt, id))
 		db.commit()
+		logger.debug('{}: XP set to {}'.format(user, amt))
 		
 	def updateLVL(user: discord.Member, lvl): #Sets the lvl of a user
 		id = user.id
 		cursor.execute("""UPDATE members SET lvl = ? WHERE id = ? """, (lvl, id))
 		db.commit()
+		logger.debug('{}: Level set to {}'.format(user, lvl))
 
 	def getLVL(user: discord.Member):
 		id = user.id
@@ -38,7 +43,6 @@ class database:
 		if lvl:
 			return lvl[0]
 		else:
-			print('DB: User \'{}\' Not Found, Adding Record'.format(user))
 			database.addMem(user)
 			return database.getLVL(user)
 		
@@ -49,7 +53,6 @@ class database:
 		if xp:
 			return xp[0]
 		else:
-			print('DB: User \'{}\' Not Found, Adding Record'.format(user))
 			database.addMem(user)
 			return database.getXP(user)
 			
@@ -57,12 +60,14 @@ class database:
 		curxp = database.getXP(user)
 		newxp = curxp + amt
 		database.updateXP(user, newxp)
+		logger.debug('{}: {} Added to XP'.format(user, amt))
 		return newxp
 		
 	def remXP(user: discord.Member, amt):
 		curxp = database.getXP(user)
 		newxp = curxp - amt
 		database.updateXP(user, newxp)
+		logger.debug('{}: {} Removed from XP'.format(user, amt))
 		return newxp
 		
 	def getAllUsers():
@@ -74,12 +79,14 @@ class database:
 		curlvl = database.getLVL(user)
 		newlvl = curlvl + amt
 		database.updateLVL(user, newlvl)
+		logger.debug('{}: {} Added to Level'.format(user, amt))
 		return newlvl
 		
 	def remLVL(user: discord.Member, amt):
 		curlvl = database.getLVL(user)
 		newlvl = curlvl - amt
 		database.updateLVL(user, newlvl)
+		logger.debug('{}: {} Removed from Level'.format(user, amt))
 		return newlvl
 		
 	def addWarn(user: discord.Member, reason, warner: discord.Member):

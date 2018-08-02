@@ -2,12 +2,15 @@ import discord
 import random
 import datetime
 import pytz
+import logging
 
 
 from discord.ext import commands
 from cogs.tools.database import database as db
 from cogs.xp import XP as XP
 from config.configLoader import settings
+
+logger = logging.getLogger('events')
 
 class events:
 	def __init__(self, bot):
@@ -18,11 +21,16 @@ class events:
 		
 			#Adds XP per message in a Guild
 			if ctx.guild:
+				logger.debug('Begin XP Gain: {}'.format(user))
 				lvl = db.getLVL(user)
 				oxp = db.getXP(user)
+				logger.debug('Level: {} XP: {}'.format(lvl, oxp))
 				amt = random.randint(10, 15)
+				logger.debug('Amount: {}'.format(amt))
 				db.addXP(user, amt)
 				nxp = db.getXP(user)
+				logger.debug('New XP: {}'.format(nxp))
+				logger.info('{}: Old XP: {} New XP: {}'.format(user, oxp, nxp))
 				goal = 300 + (lvl * 100)
 				if oxp < goal and nxp >= goal:
 					embed = discord.Embed(title="Can Level Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached enough **{}** to **level up**".format(user.mention, XP.xpName))
