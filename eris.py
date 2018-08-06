@@ -37,9 +37,8 @@ async def degrade():
 		now = datetime.datetime.now()
 		then = (now + datetime.timedelta(days=1)).replace(hour = 0, minute = 0, second = 0)
 		delta = then - now
-		print(delta)
 		secs = delta.seconds
-		print(secs)
+		logger.info('Waiting {} seconds for degrade'.format(secs))
 		await asyncio.sleep(secs)
 		
 		users = db.getAllUsers()
