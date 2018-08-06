@@ -11,10 +11,10 @@ from cogs.tools.database import database as db
 
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme']
 
-bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner))
+game = discord.Activity(name='.help', type=discord.ActivityType.listening)
+bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner), activity=game)
 
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
-startPresence = bot.change_presence(status=discord.Status.online, activity=game)
 
 logging.basicConfig(filename='events.log', level=logging.INFO, format='%(asctime)s | %(name)s | %(levelname)s | %(message)s', datefmt='%m/%d/%Y %H:%M:%S')
 logger = logging.getLogger('core')
@@ -29,7 +29,6 @@ async def on_ready():
 		print(guild.name)
 		print(guild.id)
 		print('----------')
-	await startPresence
 	bg_task = bot.loop.create_task(degrade())
 	logger.info('----- Bot Startup Complete -----')
 
