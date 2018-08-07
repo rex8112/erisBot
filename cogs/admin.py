@@ -6,7 +6,7 @@ import logging
 
 from discord.ext import commands
 from cogs.tools.checks import *
-from config.configLoader import settings
+from cogs.tools.configLoader import settings
 from cogs.tools.database import database as db
 
 logger = logging.getLogger('admin')

@@ -6,7 +6,7 @@ import logging
 
 
 from discord.ext import commands
-from config.configLoader import settings
+from cogs.tools.configLoader import settings
 from cogs.tools.database import database as db
 
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme']

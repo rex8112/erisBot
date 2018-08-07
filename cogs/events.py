@@ -8,7 +8,7 @@ import logging
 from discord.ext import commands
 from cogs.tools.database import database as db
 from cogs.xp import XP as XP
-from config.configLoader import settings
+from cogs.tools.configLoader import settings
 
 logger = logging.getLogger('events')
 
