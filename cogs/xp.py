@@ -75,6 +75,13 @@ class XP:
 		db.addLVL(user, amt)
 		await ctx.message.add_reaction('✅')
 		
+	@xp.command()
+	@commands.is_owner()
+	async def remL(self, ctx, user: discord.Member, amt: int):
+		"""Remove Levels from a User"""
+		db.remLVL(user, amt)
+		await ctx.message.add_reaction('✅')
+	
 	@commands.command()
 	@commands.guild_only()
 	async def levelup(self, ctx):
