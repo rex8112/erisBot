@@ -68,6 +68,13 @@ class XP:
 		db.updateLVL(user, amt)
 		await ctx.message.add_reaction('✅')
 	
+	@xp.command()
+	@commands.is_owner()
+	async def addL(self, ctx, user: discord.Member, amt: int):
+		"""Add Levels to a User"""
+		db.addLVL(user, amt)
+		await ctx.message.add_reaction('✅')
+		
 	@commands.command()
 	@commands.guild_only()
 	async def levelup(self, ctx):
