@@ -29,6 +29,7 @@ class Admin:
 				Reason = ''
 			await user.send(embed=embed)
 			await user.ban(reason=ctx.message.author.name + ' | ' + Reason)
+			await ctx.message.add_reaction('✅')
 			logger.warning('{} Banned {}'.format(ctx.author, user))
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
@@ -47,6 +48,7 @@ class Admin:
 				Reason = ''
 			await user.send(embed=embed)
 			await user.kick(reason=ctx.message.author.name + ' | ' + Reason)
+			await ctx.message.add_reaction('✅')
 			logger.warning('{} Kicked {}'.format(ctx.author, user))
 		else:
 			raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
