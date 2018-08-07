@@ -22,7 +22,7 @@ class Utility:
 		av = member.avatar_url
 		nick = member.nick
 		status = member.status
-		activity = member.activity
+		activity = member.activity.name
 		joined = '{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(member.joined_at)
 		created = '{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(member.created_at)
 		
