@@ -26,11 +26,9 @@ class events:
 				oxp = db.getXP(user)
 				logger.debug('Level: {} XP: {}'.format(lvl, oxp))
 				amt = random.randint(10, 15)
-				logger.debug('Amount: {}'.format(amt))
 				db.addXP(user, amt)
 				nxp = db.getXP(user)
-				logger.debug('New XP: {}'.format(nxp))
-				logger.info('{}: Old XP: {} New XP: {} Difference: {}'.format(user, oxp, nxp, nxp - oxp))
+				logger.debug('Old XP: {} New XP: {} Difference: {}'.format(oxp, nxp, nxp - oxp))
 				goal = 300 + (lvl * 100)
 				if oxp < goal and nxp >= goal:
 					embed = discord.Embed(title="Can Level Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached enough **{}** to **level up**".format(user.mention, XP.xpName))
