@@ -60,6 +60,13 @@ class XP:
 		"""Remove XP from a User"""
 		db.remXP(user, amt)
 		await ctx.message.add_reaction('✅')
+		
+	@xp.command()
+	@commands.is_owner()
+	async def setL(self, ctx, user: discord.Member, amt: int):
+		"""Sets the Level of a User"""
+		db.updateLVL(user, amt)
+		await ctx.message.add_reaction('✅')
 	
 	@commands.command()
 	@commands.guild_only()
