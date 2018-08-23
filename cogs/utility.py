@@ -22,7 +22,8 @@ class Utility:
 		av = member.avatar_url
 		nick = member.nick
 		status = member.status
-		activity = member.activity.name
+		if member.activity:
+			activity = member.activity.name
 		joined = '{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(member.joined_at)
 		created = '{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(member.created_at)
 		
@@ -33,7 +34,10 @@ class Utility:
 		embed.add_field(name="Identification",value=id,inline=True)
 		embed.add_field(name="Nickname",value=nick,inline=True)
 		embed.add_field(name="Status",value=status,inline=True)
-		embed.add_field(name="Activity",value=activity,inline=True)
+		try:
+			embed.add_field(name="Activity",value=activity,inline=True)
+		except UnboundLocalError:
+			pass
 		embed.add_field(name="Joined At",value=joined,inline=True)
 		embed.add_field(name='Created At',value=created,inline=True)
 		embed.add_field(name='Image',value=av,inline=True)
