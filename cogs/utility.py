@@ -71,6 +71,19 @@ class Utility:
 		
 		await ctx.send(embed=embed)
 		
+	@commands.command()
+	@commands.guild_only()
+	async def jump(self, ctx, message):
+		"""Gets a Jump Url of supplied message
+		Must be used in the same channel the message resides."""
+		try:
+			m = await ctx.get_message(message)
+			embed = discord.Embed(colour=discord.Colour(0x9013fe), description='{}'.format(m.jump_url))
+		except discord.NotFound:
+			embed = discord.Embed(colour=discord.Colour(0x9013fe), description='Message Not Found: Make sure you run the command in the same channel as the message!')
+		await ctx.author.send(embed=embed)
+		await ctx.message.delete()
+		
 		
 def setup(bot):
 	bot.add_cog(Utility(bot))
