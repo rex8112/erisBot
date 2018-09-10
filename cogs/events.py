@@ -34,7 +34,7 @@ class events:
 					embed = discord.Embed(title="Can Level Up", colour=discord.Colour(0x9013fe), description="Congratulations **{}**! You have reached enough **{}** to **level up**".format(user.mention, XP.xpName))
 					embed.set_thumbnail(url=user.avatar_url)
 					
-					await ctx.channel.send(embed=embed, delete_after=10.00)
+					await user.send(embed=embed)
 					
 			#Messages Owner when receiving a DM
 			if not ctx.guild:
