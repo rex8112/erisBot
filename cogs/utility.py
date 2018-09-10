@@ -52,6 +52,25 @@ class Utility:
 		embed.set_author(name=ctx.guild, icon_url=ctx.guild.icon_url)
 		await ctx.send(embed=embed)
 		
+	@commands.command()
+	@commands.guild_only()
+	async def server(self, ctx):
+		"""Gives Current Server Information"""
+		guild = ctx.guild
+		embed = discord.Embed(colour=discord.Colour(0x9013fe))
+		embed.set_author(name=guild, icon_url=guild.icon_url)
+		embed.add_field(name='ID', value=guild.id)
+		embed.add_field(name='Owner', value=guild.owner.mention)
+		embed.add_field(name='Created', value='{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(guild.created_at))
+		embed.add_field(name='Members', value=guild.member_count)
+		embed.add_field(name='Channel Count', value=len(guild.channels) - len(guild.categories))
+		embed.add_field(name='Region', value=guild.region)
+		embed.add_field(name='Features', value=guild.features)
+		embed.add_field(name='Image', value=guild.icon_url, inline=False)
+		embed.set_image(url=guild.icon_url)
+		
+		await ctx.send(embed=embed)
+		
 		
 def setup(bot):
 	bot.add_cog(Utility(bot))
