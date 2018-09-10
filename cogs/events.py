@@ -31,7 +31,7 @@ class events:
 				logger.debug('Old XP: {} New XP: {} Difference: {}'.format(oxp, nxp, nxp - oxp))
 				goal = 300 + (lvl * 100)
 				if oxp < goal and nxp >= goal:
-					embed = discord.Embed(title="Can Level Up", colour=discord.Colour(0xbd10e0), description="Congratulations **{}**! You have reached enough **{}** to **level up**".format(user.mention, XP.xpName))
+					embed = discord.Embed(title="Can Level Up", colour=discord.Colour(0x9013fe), description="Congratulations **{}**! You have reached enough **{}** to **level up**".format(user.mention, XP.xpName))
 					embed.set_thumbnail(url=user.avatar_url)
 					
 					await ctx.channel.send(embed=embed, delete_after=10.00)
