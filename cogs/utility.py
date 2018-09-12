@@ -52,7 +52,7 @@ class Utility:
 		embed.set_author(name=ctx.guild, icon_url=ctx.guild.icon_url)
 		await ctx.send(embed=embed)
 		
-	@commands.command()
+	@commands.command(aliases=['sinfo'])
 	@commands.guild_only()
 	async def server(self, ctx):
 		"""Gives Current Server Information"""

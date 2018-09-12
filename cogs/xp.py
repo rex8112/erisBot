@@ -82,7 +82,7 @@ class XP:
 		db.remLVL(user, amt)
 		await ctx.message.add_reaction('✅')
 	
-	@commands.command()
+	@commands.command(aliases=['sleep', 'lvlup'])
 	@commands.guild_only()
 	async def levelup(self, ctx):
 		user = ctx.author
@@ -102,7 +102,7 @@ class XP:
 		embed.set_author(name=user.name, icon_url=user.avatar_url)
 		await ctx.send(embed=embed)
 		
-	@commands.command()
+	@commands.command(aliases=['lb'])
 	@commands.guild_only()
 	async def leaderboard(self, ctx):
 		users = db.leaderboard()
