@@ -90,6 +90,31 @@ class Admin:
             embed.add_field(name="{}: {} - {}".format(indx, str(warner), date), value=reason, inline=False)
         
         await ctx.send(embed=embed)
+        
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(ban_members=True)
+    async def awarnings(self, ctx, *page: int):
+        """Lists 10 warnings from everyone"""
+        
+        embed = discord.Embed(title='Warnings', colour=discord.Colour(0x9013fe))
+        if page:
+            warns = db.getAllWarn(page[0])
+            embed.set_footer(text='Page {}'.format(page[0]))
+        else:
+            warns = db.getAllWarn(1)
+            embed.set_footer(text='Page {}'.format(1))
+        
+        for warn in warns:
+            indx = warn[0]
+            user = self.bot.get_user(warn[2])
+            date = warn[5]
+            reason = warn[3]
+            warner = self.bot.get_user(warn[4])
+            if not warner:
+                warner = 'Unknown'
+                
+            embed.add_field(name='{}: {}'.format(indx, str(user)), value=reason, inline=False)
             
         await ctx.send(embed=embed)
         

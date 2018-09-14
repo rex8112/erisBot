@@ -103,6 +103,12 @@ class database:
         warns = cursor.fetchall()
         return warns
         
+    def getAllWarn(page: int):
+        p = (page - 1) * 10
+        cursor.execute("""SELECT * FROM warnings ORDER BY indx DESC LIMIT 10 OFFSET ?""", (p,))
+        warns = cursor.fetchall()
+        return warns
+        
     def leaderboard():
         cursor.execute("""SELECT id, lvl, xp FROM members ORDER BY lvl DESC, xp DESC LIMIT 10""")
         users = cursor.fetchall()
