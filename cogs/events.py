@@ -67,6 +67,27 @@ class events:
             embed = discord.Embed(title="Error", colour=discord.Colour(0xd0021b), description=str(error))
             embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed, delete_after=5.00)
+            
+    async def on_member_join(self, user):
+        channel = self.bot.get_channel(415969947966111754)
+    
+        joined = '{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(user.joined_at)
+        created = '{0.month}/{0.day}/{0.year} - {0.hour}:{0.minute}'.format(user.created_at)
+        
+        embed = discord.Embed(title='User Joined', colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')), description='{}'.format(user.mention))
+        embed.add_field(name='Joined Server', value=joined, inline=True)
+        embed.add_field(name='Joined Discord', value=created, inline=True)
+        embed.set_thumbnail(url=user.avatar_url)
+        
+        await channel.send(embed=embed)
+        
+    async def on_member_remove(self, user):
+        channel = self.bot.get_channel(415969947966111754)
+        
+        embed = discord.Embed(title='User Joined', colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')), description='{}'.format(user.mention))
+        embed.set_thumbnail(url=user.avatar_url)
+        
+        await channel.send(embed=embed)
         
 def setup(bot):
     bot.add_cog(events(bot))
