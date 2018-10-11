@@ -84,7 +84,7 @@ class events:
     async def on_member_remove(self, user):
         channel = self.bot.get_channel(415969947966111754)
         
-        embed = discord.Embed(title='User Joined', colour=discord.Colour(0x9013fe), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')), description='{}'.format(user.mention))
+        embed = discord.Embed(title='User Left', colour=discord.Colour(0xd0021b), timestamp=datetime.datetime.now(tz=pytz.timezone('US/Central')), description='{}'.format(user.mention))
         embed.set_thumbnail(url=user.avatar_url)
         
         await channel.send(embed=embed)
