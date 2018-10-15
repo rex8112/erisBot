@@ -82,7 +82,7 @@ class XP:
         db.remLVL(user, amt)
         await ctx.message.add_reaction('✅')
     
-    @commands.command(aliases=['sleep', 'lvlup'])
+    @commands.command(aliases=['sleep', 'lvlup', 'ding'])
     @commands.guild_only()
     async def levelup(self, ctx):
         user = ctx.author
