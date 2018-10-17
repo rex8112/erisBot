@@ -1,6 +1,7 @@
 import discord
 import datetime
 from discord.ext import commands
+from cogs.tools.database import database as db
 
 
 class Utility:
@@ -83,7 +84,23 @@ class Utility:
             embed = discord.Embed(colour=discord.Colour(0x9013fe), description='Message Not Found: Make sure you run the command in the same channel as the message!')
         await ctx.author.send(embed=embed)
         await ctx.message.delete()
-        
+
+	@commands.command()
+	@commands.guild_only()
+	@commands.has_permissions(manage_roles=True)
+	async def addJRole(self, ctx, role: discord.Role)
+			"""Adds a joinable role"""
+
+			db.addRole(role)
+
+	@commands.command()
+	@commands.guild_only()
+	@commands.has_permissions(manage_roles=True)
+	async def remJRole(self, ctx, role: discord.Role)
+			"""Removes a joinable role"""
+
+			db.remRole(role)    
+    
         
 def setup(bot):
     bot.add_cog(Utility(bot))
