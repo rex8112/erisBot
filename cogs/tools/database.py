@@ -14,6 +14,8 @@ class database:
             name TEXT, id INTEGER UNIQUE, xp INTEGER DEFAULT 0, lvl INTEGER DEFAULT 0)""" )
         
         cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, name TEXT, id INTEGER, reason TEXT, warnerid INTEGER, date TEXT, state INTEGER DEFAULT 0)""")
+
+		cursor.execute( """CREATE TABLE IF NOT EXISTS roles( indx INTEGER PRIMARY KEY, role TEXT UNIQUE""" )
         db.commit()
             
     def addMem(user: discord.Member): #add a member record
@@ -113,4 +115,16 @@ class database:
         cursor.execute("""SELECT id, lvl, xp FROM members ORDER BY lvl DESC, xp DESC LIMIT 10""")
         users = cursor.fetchall()
         return users
-        
+
+	def addRole(role):
+		cursor.execute( """INSERT INTO roles(role) VALUES(?)""",(role,) )
+		db.commit()
+
+	def remRole(role):
+		cursor.execute( """DELETE FROM roles WHERE role = ?""", (role,) )
+		db.commit()
+
+	def listRole():
+		cursor.execute( """SELECT * FROM roles ORDER BY indx LIMIT 10""" )
+        roles = cursor.fetchall()
+		return roles
