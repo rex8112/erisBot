@@ -7,7 +7,7 @@ from cogs.tools.database import database as db
 class Utility:
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command()
     @commands.guild_only()
     async def ping(self, ctx):
@@ -85,22 +85,45 @@ class Utility:
         await ctx.author.send(embed=embed)
         await ctx.message.delete()
 
-	@commands.command()
-	@commands.guild_only()
-	@commands.has_permissions(manage_roles=True)
-	async def addJRole(self, ctx, role: discord.Role)
-			"""Adds a joinable role"""
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def addRole(self, ctx, role: discord.Role):
+        """Adds a joinable role"""
 
-			db.addRole(role)
+        result = db.addRole(role)
+        
+        if result:
+            await ctx.send('Error: {}'.format(result))
+        
+        await ctx.message.add_reaction('✅')
 
-	@commands.command()
-	@commands.guild_only()
-	@commands.has_permissions(manage_roles=True)
-	async def remJRole(self, ctx, role: discord.Role)
-			"""Removes a joinable role"""
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def remRole(self, ctx, role: discord.Role):
+        """Removes a joinable role"""
 
-			db.remRole(role)    
+        db.remRole(role)
+        
+        await ctx.message.add_reaction('✅')
     
+    @commands.command()
+    @commands.guild_only()
+    async def listRoles(self, ctx):
+        """Lists available joinable roles"""
+        
+        roles = db.listRole()
+        embed = discord.Embed(title='Joinable Roles', colour=discord.Colour(0x9013fe))
+        
+        for r in roles:
+            indx = r[0]
+            role = r[1]
+            id = r[2]
+            
+            embed.add_field(name='{}: {}'.format(indx, role), value='{}'.format(id), inline=False)
+        
+        await ctx.send(embed=embed)
         
 def setup(bot):
     bot.add_cog(Utility(bot))
