@@ -24,6 +24,11 @@ class database:
                                              VALUES(?, ?)""", (name, id))
         db.commit()
         logger.info('{} Added to Database'.format(user))
+        
+    def remMem(id): #remove a member record
+        cursor.execute( """DELETE FROM members WHERE id = ?""", (id,) )
+        db.commit()
+        logger.warning('{}: Removed from Database'.format(id))
             
     def updateXP(user: discord.Member, amt): #Sets the XP of a user
         id = user.id
