@@ -49,22 +49,25 @@ async def degrade():
             usr = bot.get_user(id)
             amt = 10 + (lvl * 1)
             
-            if lvl <= 0 and xp - amt < 0: #If running out of XP with no levels to sell
-                db.updateXP(usr, 0)
-            elif xp - amt < 0: #If running out of XP with levels to sell
-                lvl = lvl - 1
-                sell = 300 + (lvl * 100)
-                remain = amt - xp
-                xp = sell - remain
-                db.updateLVL(usr, lvl)
-                db.updateXP(usr, xp)
-                
-                embed = discord.Embed(title = 'Level Lost', colour = discord.Colour(0xd0021b), description = 'Due to low-activity you have lost a level and are now Level **{}**'.format(lvl))
-                await user.send(embed=embed)
-                logger.info('Removing Level: {}'.format(usr))
-            else: #Only remaining option is there is XP left to take
-                db.remXP(usr, amt)
-                logger.debug('Removing {} XP from {}'.format(amt, usr))
+            try:
+                if lvl <= 0 and xp - amt < 0: #If running out of XP with no levels to sell
+                    db.updateXP(usr, 0)
+                elif xp - amt < 0: #If running out of XP with levels to sell
+                    lvl = lvl - 1
+                    sell = 300 + (lvl * 100)
+                    remain = amt - xp
+                    xp = sell - remain
+                    db.updateLVL(usr, lvl)
+                    db.updateXP(usr, xp)
+                    
+                    embed = discord.Embed(title = 'Level Lost', colour = discord.Colour(0xd0021b), description = 'Due to low-activity you have lost a level and are now Level **{}**'.format(lvl))
+                    await user.send(embed=embed)
+                    logger.info('Removing Level: {}'.format(usr))
+                else: #Only remaining option is there is XP left to take
+                    db.remXP(usr, amt)
+                    logger.debug('Removing {} XP from {}'.format(amt, usr))
+            except AttributeError:
+                db.remMem(id)
         
     
     
