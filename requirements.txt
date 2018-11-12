@@ -1,0 +1,4 @@
+discord.py==1.0.0a0
+configobj==5.0.6
+pytz==2018.4
+discord==0.0.2
