@@ -133,6 +133,13 @@ class database:
         id = role.id
         cursor.execute( """DELETE FROM roles WHERE id = ?""", (id,) )
         db.commit()
+        
+    def getRole(role):
+        id = role.id
+        cursor.execute( """SELECT role, id FROM roles WHERE id = ?""", (id,) )
+        target = cursor.fetchone()
+        return target
+        
 
     def listRole():
         cursor.execute( """SELECT * FROM roles ORDER BY indx LIMIT 10""" )
