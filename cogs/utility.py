@@ -1,8 +1,11 @@
 import discord
 import datetime
+import logging
+
 from discord.ext import commands
 from cogs.tools.database import database as db
 
+logger = logging.getLogger('utility')
 
 class Utility:
     def __init__(self, bot):
@@ -97,6 +100,7 @@ class Utility:
             await ctx.send('Error: {}'.format(result))
         
         await ctx.message.add_reaction('✅')
+        logger.warning('{} Added {} Role to Joinable'.format(str(ctx.author), str(role)))
 
     @commands.command()
     @commands.guild_only()
@@ -107,8 +111,9 @@ class Utility:
         db.remRole(role)
         
         await ctx.message.add_reaction('✅')
+        logger.warning('{} Removed {} Role from Joinable'.format(str(ctx.author), str(role)))
     
-    @commands.command()
+    @commands.command(aliases=['lr'])
     @commands.guild_only()
     async def listRoles(self, ctx):
         """Lists available joinable roles"""
@@ -124,6 +129,36 @@ class Utility:
             embed.add_field(name='{}: {}'.format(indx, role), value='{}'.format(id), inline=False)
         
         await ctx.send(embed=embed)
+        
+    @commands.command()
+    @commands.guild_only()
+    async def join(self, ctx, role: discord.Role):
+        """Joins a joinable role"""
+        
+        target = db.getRole(role)
+        name = target[0]
+        id = target[1]
+        guild = ctx.guild
+        nrole = guild.get_role(id)
+        
+        await ctx.author.add_roles(nrole, reason='Self Joined')
+        await ctx.message.add_reaction('✅')
+        logger.info('{} Joined {}'.format(str(ctx.author), name))
+    
+    @commands.command()
+    @commands.guild_only()
+    async def unjoin(self, ctx, role: discord.Role):
+        """Leaves a joinable role"""
+        
+        target = db.getRole(role)
+        name = target[0]
+        id = target[1]
+        guild = ctx.guild
+        nrole = guild.get_role(id)
+        
+        await ctx.author.remove_roles(nrole, reason='Self Left')
+        await ctx.message.add_reaction('✅')
+        logger.info('{} Unjoined {}'.format(str(ctx.author), name))
         
 def setup(bot):
     bot.add_cog(Utility(bot))
