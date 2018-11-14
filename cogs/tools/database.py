@@ -115,6 +115,10 @@ class database:
         warns = cursor.fetchall()
         return warns
         
+    def pardonWarn(indx: int):
+        cursor.execute("""UPDATE warnings SET state = 1 WHERE indx = ?""", (indx,))
+        db.commit()
+        
     def leaderboard():
         cursor.execute("""SELECT id, lvl, xp FROM members ORDER BY lvl DESC, xp DESC LIMIT 10""")
         users = cursor.fetchall()

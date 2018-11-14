@@ -73,6 +73,13 @@ class Admin:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
+    async def pardon(self, ctx, indx):
+        db.pardonWarn(indx)
+        await ctx.message.add_reaction('✅')
+            
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(ban_members=True)
     async def warnings(self, ctx, user: discord.Member, *page):
         """Lists the current warnings a user has"""
         warns = db.getWarn(user)
@@ -83,11 +90,17 @@ class Admin:
             indx = warn[0]
             date = warn[5]
             reason = warn[3]
+            state = warn[6]
             warner = self.bot.get_user(warn[4])
             if not warner:
                 warner = "Unknown"
             
-            embed.add_field(name="{}: {} - {}".format(indx, str(warner), date), value=reason, inline=False)
+            if state:
+                name = "~~{}: {} - {}~~".format(indx, str(warner), date)
+                reason = '~~{}~~'.format(reason)
+            else:
+                name = "{}: {} - {}".format(indx, str(warner), date)
+            embed.add_field(name=name, value=reason, inline=False)
         
         await ctx.send(embed=embed)
         
@@ -107,14 +120,21 @@ class Admin:
         
         for warn in warns:
             indx = warn[0]
-            user = self.bot.get_user(warn[2])
+            id = warn[2]
             date = warn[5]
             reason = warn[3]
+            state = warn[6]
+            usr = self.bot.get_user(id)
             warner = self.bot.get_user(warn[4])
             if not warner:
-                warner = 'Unknown'
-                
-            embed.add_field(name='{}: {}'.format(indx, str(user)), value=reason, inline=False)
+                warner = "Unknown"
+            
+            if state:
+                name = "~~{}: {}: {}~~".format(indx, str(usr), date)
+                reason = '~~{}~~'.format(reason)
+            else:
+                name = "{}: {}: {}".format(indx, str(usr), date)
+            embed.add_field(name=name, value=reason, inline=False)
             
         await ctx.send(embed=embed)
         
