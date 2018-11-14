@@ -71,6 +71,12 @@ class Admin:
             raise commands.UserInputError('{} has more or equal power to you.'.format(user.mention))
             
     @commands.command()
+    @commands.is_owner()
+    async def remWarn(self, ctx, indx):
+        db.remWarn(indx)
+        await ctx.message.add_reaction('✅')
+        
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def pardon(self, ctx, indx):

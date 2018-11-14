@@ -103,6 +103,9 @@ class database:
         cursor.execute("""INSERT INTO warnings(name, id, reason, warnerid, date) VALUES(?, ?, ?, ?, ?)""", (name, id, reason, wid, today))
         db.commit()
         
+    def remWarn(indx):
+        cursor.execute("""DELETE FROM warnings WHERE indx = ?""", (indx,))
+        
     def getWarn(user: discord.Member):
         id = user.id
         cursor.execute("""SELECT * FROM warnings WHERE id = ?""", (id,))
