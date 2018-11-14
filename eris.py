@@ -67,7 +67,7 @@ async def degrade():
                     db.remXP(usr, amt)
                     logger.debug('Removing {} XP from {}'.format(amt, usr))
             except AttributeError:
-                db.remMem(id)
+                logger.info('{} Not Found For XP Degrade'.format(id))
         
     
     
