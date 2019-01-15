@@ -1,6 +1,7 @@
 import discord
 import datetime
 import logging
+import asyncio
 
 from discord.ext import commands
 from cogs.tools.database import database as db
@@ -159,6 +160,23 @@ class Utility:
         await ctx.author.remove_roles(nrole, reason='Self Left')
         await ctx.message.add_reaction('✅')
         logger.info('{} Unjoined {}'.format(str(ctx.author), name))
+        
+    @commands.command()
+    @commands.guild_only()
+    async def retest(self, ctx):
+        message = await ctx.send('Test, react with ✅ or ❌')
+        await message.add_reaction('✅')
+        await message.add_reaction('❌')
+        
+        def check(reaction, user):
+            return user == ctx.message.author and message.id == reaction.message.id
+        
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=10.0)
+        except asyncio.TimeoutError:
+            await ctx.send('Timeout')
+        else:
+            await ctx.send('So far so good!')
         
 def setup(bot):
     bot.add_cog(Utility(bot))
