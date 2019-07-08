@@ -8,7 +8,7 @@ from cogs.tools.database import database as db
 
 logger = logging.getLogger('utility')
 
-class Utility:
+class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 

@@ -11,7 +11,7 @@ from cogs.tools.database import database as db
 
 logger = logging.getLogger('admin')
 
-class Admin:
+class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
