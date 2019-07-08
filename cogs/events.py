@@ -12,7 +12,7 @@ from cogs.tools.configLoader import settings
 
 logger = logging.getLogger('events')
 
-class events:
+class events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     async def on_message(self, ctx):

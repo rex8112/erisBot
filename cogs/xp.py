@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from cogs.tools.database import database as db
 
-class XP:
+class XP(commands.Cog):
     xpName = 'Souls'
     def __init__(self, bot):
         self.bot = bot

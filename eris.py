@@ -29,7 +29,7 @@ async def on_ready():
         print(guild.name)
         print(guild.id)
         print('----------')
-    bg_task = bot.loop.create_task(degrade())
+    #bg_task = bot.loop.create_task(degrade())
     logger.info('----- Bot Startup Complete -----')
 
 ##async def degrade():

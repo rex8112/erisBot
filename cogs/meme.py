@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from cogs.tools.matt import matt as m
 
-class Meme:
+class Meme(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
