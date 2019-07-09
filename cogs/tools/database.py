@@ -166,3 +166,4 @@ class database:
         
     def delRP(name):
         cursor.execute( """DELETE FROM roleplays WHERE name = ?""", (name,) )
+        db.commit()

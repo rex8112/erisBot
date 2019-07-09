@@ -42,17 +42,24 @@ class Roleplay(commands.Cog):
     await category.create_text_channel('ooc', topic='Out Of Character chat for {} Roleplay'.format(name))
     await category.create_text_channel('information', topic='Information Channel for {} Roleplay'.format(name))
     await category.create_text_channel('roleplay', topic='Roleplay Channel for {} Roleplay'.format(name))
+    
+    db.addRP(name, category.id, role.id, private)
       
   @roleplay.command()
   async def remove(self, ctx, rp: discord.CategoryChannel):
     guild = ctx.guild
     channels = rp.channels
+    
     for ch in channels:
       await ch.delete(reason='{0.name} Deletion'.format(rp))
+      
     await rp.delete(reason='{0.name} Deletion'.format(rp))
+    
     for role in guild.roles:
       if role.name == rp.name:
         await role.delete(reason='{0.name} Deletion'.format(rp))
+        
+    db.delRP(rp.name)
   
 def setup(bot):
   bot.add_cog(Roleplay(bot))
