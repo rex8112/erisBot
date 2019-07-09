@@ -15,6 +15,8 @@ logger = logging.getLogger('events')
 class events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+    
+    @commands.Cog.listener()
     async def on_message(self, ctx):
         user = ctx.author
         if not user.bot:
@@ -44,6 +46,7 @@ class events(commands.Cog):
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     await owner.send(embed=embed)
 
+    @commands.Cog.listener()
     async def on_command_completion(self, ctx):
         try:
             log = self.bot.get_channel(int(settings.logid))
@@ -58,6 +61,7 @@ class events(commands.Cog):
         except ValueError:
             return
         
+    @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.NoPrivateMessage):
             print(error)
@@ -70,6 +74,7 @@ class events(commands.Cog):
             embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed, delete_after=5.00)
             
+    @commands.Cog.listener()
     async def on_member_join(self, user):
         channel = self.bot.get_channel(415969947966111754)
     
@@ -83,6 +88,7 @@ class events(commands.Cog):
         
         await channel.send(embed=embed)
         
+    @commands.Cog.listener()
     async def on_member_remove(self, user):
         channel = self.bot.get_channel(415969947966111754)
         
