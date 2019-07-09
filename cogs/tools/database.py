@@ -15,6 +15,8 @@ class database:
         cursor.execute( """CREATE TABLE IF NOT EXISTS warnings( indx INTEGER PRIMARY KEY, name TEXT, id INTEGER, reason TEXT, warnerid INTEGER, date TEXT, state INTEGER DEFAULT 0)""")
 
         cursor.execute( """CREATE TABLE IF NOT EXISTS roles( indx INTEGER PRIMARY KEY, role TEXT UNIQUE, id INTEGER UNIQUE)""" )
+        
+        cursor.execute( """CREATE TABLE IF NOT EXISTS roleplays( indx INTEGER PRIMARY KEY, name TEXT UNIQUE, category INTEGER, role INTEGER, private INTEGER, archived INTEGER DEFAULT 0)""" )
         db.commit()
         
     def addMem(user: discord.Member): #add a member record
@@ -152,3 +154,15 @@ class database:
         cursor.execute( """SELECT * FROM roles ORDER BY indx LIMIT 10""" )
         roles = cursor.fetchall()
         return roles
+        
+    def addRP(name, cat: int, role: int, private: bool):
+        if private:
+            private = 1
+        else:
+            private = 0
+            
+        cursor.execute( """INSERT INTO roleplays(name, category, role, private) VALUES(?, ?, ?, ?)""", (name, cat, role, private) )
+        db.commit()
+        
+    def delRP(name):
+        cursor.execute( """DELETE FROM roleplays WHERE name = ?""", (name,) )
