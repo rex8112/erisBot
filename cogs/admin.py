@@ -2,12 +2,13 @@ import datetime
 import pytz
 import discord
 import logging
+import sys
+import cogs.tools.database as db
 
 
 from discord.ext import commands
 from cogs.tools.checks import *
 from cogs.tools.configLoader import settings
-from cogs.tools.database import database as db
 
 logger = logging.getLogger('admin')
 
@@ -169,13 +170,13 @@ class Admin(commands.Cog):
             await user.send(content)
             await ctx.message.add_reaction('✅')
         except:
-            await ctx.send(content='Sorry {0},\n{1} is not a valid Member.'.format(ctx.message.author.name, player, delete_after=5.00))
+            await ctx.send(content='Sorry {0},\n{1} is not a valid Member.'.format(ctx.message.author.name, user, delete_after=5.00))
 
     @commands.command()
     @commands.is_owner()
     async def setname(self, ctx, new: str):
         """Changes the username of the bot"""
-        await bot.user.edit(username=new)
+        await self.bot.user.edit(username=new)
         logger.info('Bot name set to: {}'.format(new))
         
     @commands.command()

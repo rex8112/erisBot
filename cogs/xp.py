@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from cogs.tools.database import database as db
+import cogs.tools.database as db
 
 class XP(commands.Cog):
     xpName = 'Souls'
