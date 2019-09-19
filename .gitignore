@@ -106,3 +106,4 @@ venv.bak/
 # database
 *.db
 start.bat
+.vscode
