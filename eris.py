@@ -9,7 +9,7 @@ from discord.ext import commands
 from cogs.tools.configLoader import settings
 from cogs.tools.database import database as db
 
-startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme']
+startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme', 'cogs.roleplay']
 
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
 bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner), activity=game)

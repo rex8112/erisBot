@@ -4,7 +4,7 @@ import logging
 import asyncio
 
 from discord.ext import commands
-from cogs.tools.database import database as db
+import cogs.tools.database as db
 
 logger = logging.getLogger('utility')
 
