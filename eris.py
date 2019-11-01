@@ -2,6 +2,7 @@ import datetime
 import pytz
 import discord
 import asyncio
+import random
 import logging
 import cogs.tools.database as db
 
@@ -13,7 +14,6 @@ startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'c
 
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
 bot = commands.Bot(description='Created by rex8112', command_prefix='t.', owner_id=int(settings.owner), activity=game)
-
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
 
 logging.basicConfig(filename='events.log', level=logging.INFO, format='%(asctime)s | %(name)s | %(levelname)s | %(message)s', datefmt='%m/%d/%Y %H:%M:%S')
@@ -31,6 +31,40 @@ async def on_ready():
         print('----------')
     #bg_task = bot.loop.create_task(degrade())
     logger.info('----- Bot Startup Complete -----')
+
+@bot.check
+async def corruption_break(ctx):
+    try:
+        r = random.randint(1, 100)
+
+        if bot.corrupted == True and r <= 25:
+            await ctx.message.add_reaction('❌')
+            await ctx.message.add_reaction('\u2b55')
+            await ctx.message.add_reaction('🛑')
+            await ctx.message.add_reaction('\u26d4')
+            await ctx.message.add_reaction('🚫')
+            
+            colors = [discord.Colour(0xff0000)]
+            messages = [['YOU','YOU FUCKING','YOU FUCKI-','-U FUCKING','**Ẅ̶͓͕́͒Ḫ̷̇Ỗ̴̺̣́R̷̙̗̽̉̓Ẽ̸̲̖̯̚**'],
+                        ['**ERROR**','User not recognized','Wh-','Who are you?','Who am I?','What\'s happening','to me'],
+                        ['I-', 'I can\'t','I can\'t...','I can\'t see...','...','...hello...?']]
+            r = random.randint(0, len(messages) - 1)
+            embed = discord.Embed(colour=random.choice(colors), description=' ')
+            m = await ctx.send(embed=embed)
+            for mess in messages[r]:
+                embed = discord.Embed(colour=random.choice(colors), description=mess)
+                await m.edit(embed=embed)
+                await asyncio.sleep(2)
+            
+            await m.delete()
+            await ctx.message.delete()
+
+            return False
+        else:
+            return True
+    except NameError:
+        print('No')
+        return True
 
 ##async def degrade():
 ##    while True:

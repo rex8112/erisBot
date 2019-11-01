@@ -68,6 +68,8 @@ class events(commands.Cog):
             await ctx.send('[NoPrivateMessage] Sorry. This command is not allow in private messages.')
         elif isinstance(error, commands.CommandNotFound):
             return
+        elif isinstance(error, commands.CheckFailure):
+            return
         else:
             print('{}: {}'.format(type(error).__name__, error))
             embed = discord.Embed(title="Error", colour=discord.Colour(0xd0021b), description='{}: {}'.format(type(error).__name__, str(error)))

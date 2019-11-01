@@ -13,32 +13,28 @@ from discord.utils import get
 logger = logging.getLogger('corruption')
 
 class Data:
-    corrupted = False
-    guildID = 466060673651310593
+    guildID = 180069417625845760
     guild = None
     chan = None
     mess = []
-    startTime = datetime.time(hour=3, minute = 0, second=0)
-    endTime = datetime.time(hour=12, minute=0, second=0)
+    startTime = datetime.time(hour=23, minute = 0, second=0)
+    endTime = datetime.time(hour=5, minute=0, second=0)
 
 class Voice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.corrupt.start()
-        self.uncorrupt.start()
+        self.bot.corrupted = None
+        self.corruptionController.start()
 
     @commands.Cog.listener()
     async def on_ready(self):
         print('test')
-        #await self.corrupt()
-        await asyncio.sleep(300)
-        #await self.uncorrupt()
 
     @commands.command(hidden=True)
     @commands.is_owner()
     async def invade(self, ctx, ch: discord.VoiceChannel):
         """Connect to VC"""
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
+        voice = get(self.bot.voice_clients, guild=Data.guild)
 
         if voice and voice.is_connected():
             await voice.move_to(ch)
@@ -46,11 +42,11 @@ class Voice(commands.Cog):
            voice = await ch.connect()
 
         _ = os.path.isfile("sound.mp3")
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
+        await asyncio.sleep(5)
         voice.play(discord.FFmpegPCMAudio("sound.mp3"), after=lambda e: print("Sound done!"))
         voice.source = discord.PCMVolumeTransformer(voice.source)
-        voice.source.volume = 0.07
-        await asyncio.sleep(360)
+        voice.source.volume = 0.1
+        await asyncio.sleep(30)
         await voice.disconnect()
         
     # @commands.command()
@@ -73,67 +69,79 @@ class Voice(commands.Cog):
     #         await asyncio.sleep(5)
     #     await message.delete()
 
-    @tasks.loop(minutes=1)
-    async def corrupt(self):
+    @tasks.loop(minutes=10)
+    async def corruptionController(self):
         now = datetime.datetime.now()
         startTime = datetime.datetime.now().replace(hour=Data.startTime.hour, minute=Data.startTime.minute, second=Data.startTime.second)
         endTime = datetime.datetime.now().replace(hour=Data.endTime.hour, minute=Data.endTime.minute, second=Data.endTime.second)
-        if Data.corrupted == True:
+
+        if self.bot.corrupted == None:
+            if self.bot.user.name != 'Eris':
+                self.bot.corrupted = True
+            else:
+                self.bot.corrupted = False
+        
+        if now < startTime or endTime >= now: #If it's outside of the corruption time
+            if self.bot.corrupted == True:
+                print('Immediately uncorrupting for catch up')
+                await self.uncorrupt()
+
             delta = startTime - now
             if delta.days < 0:
                 delta += datetime.timedelta(days=1)
-        else:
-            if startTime <= now and endTime > now:
-                delta = datetime.timedelta(seconds=0)
-            else:
-                delta = startTime - now
 
-        print('Waiting {} seconds to corrupt'.format(delta.seconds))
-        await asyncio.sleep(delta.seconds)
+            print('Waiting {} seconds for corruption'.format(delta.seconds))
+            await asyncio.sleep(delta.seconds)
+            await self.corrupt()
+        else: #Only other option is inside of the corruption time
+            if self.bot.corrupted == False:
+                print('Immediately corrupting for catch up')
+                await self.corrupt()
+            elif not self.randomMessage.get_task(): #In the event the bot died and came back during corruption, it won't go through corrupt() and start randomMessage()
+                self.randomMessage.start()
+                print('Restarting Random Messages')
+            
+            delta = endTime - now
+            if delta.days < 0:
+                delta += datetime.timedelta(days=1)
 
-        #categories = Data.guild.categories
-        #Data.chan = await Data.guild.create_text_channel(name='_____',category=random.choice(categories),reason='Error 403: Request Denied')
-        self.randomMessage.start()
-        with open('erisGlitch.png', 'rb') as myfile:
-            await self.bot.user.edit(username='E̷͑͐r̸̎͝í̴̛s̵', avatar=myfile.read())
-
-    @corrupt.before_loop
-    async def before_corrupt(self):
+            print('Waiting {} seconds for uncorruption'.format(delta.seconds))
+            await asyncio.sleep(delta.seconds)
+            await self.uncorrupt()
+            
+    @corruptionController.before_loop
+    async def before_corruptionController(self):
         print('Waiting...')
         await self.bot.wait_until_ready()
         Data.guild = self.bot.get_guild(Data.guildID)
 
-    @tasks.loop(minutes=1)
+    @corruptionController.after_loop
+    async def on_corruptionController_cancel(self):
+        if self.corruptionController.is_being_cancelled() and self.bot.corrupted == True:
+            await self.uncorrupt()
+
+    async def corrupt(self):
+        self.randomMessage.start()
+        #categories = Data.guild.categories
+        #Data.chan = await Data.guild.create_text_channel(name='_____',category=random.choice(categories),reason='Error 403: Request Denied')
+
+        try:
+            with open('erisGlitch.png', 'rb') as myfile:
+                await self.bot.user.edit(username='E̷͑͐r̸̎͝í̴̛s̵', avatar=myfile.read())
+        except discord.HTTPException:
+            print('Failed to update profile, continuing')
+        self.bot.corrupted = True
+
     async def uncorrupt(self):
-        if self.bot.user.name != 'Eris':
-            Data.corrupted = True
-        now = datetime.datetime.now()
-        startTime = datetime.datetime.now().replace(hour=Data.startTime.hour, minute=Data.startTime.minute, second=Data.startTime.second)
-        endTime = datetime.datetime.now().replace(hour=Data.endTime.hour, minute=Data.endTime.minute, second=Data.endTime.second)
-        if Data.corrupted == False:
-            delta = endTime - now
-            if delta.days < 0:
-                delta += datetime.timedelta(days=1)
-        else:
-            if startTime > now and endTime <= now:
-                delta = datetime.timedelta(seconds=0)
-            else:
-                delta = endTime - now
-                if delta.days < 0:
-                    delta += datetime.timedelta(days=1)
-
-        print('Waiting {} seconds to uncorrupt'.format(delta.seconds))
-        await asyncio.sleep(delta.seconds)
-
         self.randomMessage.cancel()
         await self.disconnect()
-        with open('eris.jpg', 'rb') as myfile:
-            await self.bot.user.edit(username='Eris', avatar=myfile.read())
 
-    @uncorrupt.before_loop
-    async def before_uncorrupt(self):
-        await self.bot.wait_until_ready()
-        Data.guild = self.bot.get_guild(Data.guildID)
+        try:
+            with open('eris.jpg', 'rb') as myfile:
+                await self.bot.user.edit(username='Eris', avatar=myfile.read())
+        except discord.HTTPException:
+            print('Failed to update profile, continuing')
+        self.bot.corrupted = False
 
     @tasks.loop(minutes=30)
     async def randomMessage(self):
@@ -149,7 +157,7 @@ class Voice(commands.Cog):
             await asyncio.sleep(5)
 
     @randomMessage.after_loop
-    async def on_randomMessage_canel(self):
+    async def on_randomMessage_cancel(self):
         if self.randomMessage.is_being_cancelled():
             for m in Data.mess:
                 try:
