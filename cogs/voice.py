@@ -81,7 +81,7 @@ class Voice(commands.Cog):
             else:
                 self.bot.corrupted = False
         
-        if now > startTime and endTime <= now: #If it's inside of the corruption time
+        if now >= startTime or endTime < now: #If it's inside of the corruption time
             if self.bot.corrupted == False:
                 print('Immediately corrupting for catch up')
                 await self.corrupt()
@@ -96,7 +96,7 @@ class Voice(commands.Cog):
             print('Waiting {} seconds for uncorruption'.format(delta.seconds))
             await asyncio.sleep(delta.seconds)
             await self.uncorrupt()
-            
+
         else: #Only other option is outside of the corruption time
             if self.bot.corrupted == True:
                 print('Immediately uncorrupting for catch up')
