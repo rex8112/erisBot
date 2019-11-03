@@ -5,7 +5,9 @@ import logging
 
 
 db = sqlite3.connect('erisData.db')
+db2 = sqlite3.connect('corruption.db')
 cursor = db.cursor()
+cursor2 = db2.cursor()
 logger = logging.getLogger('database')
 
 
@@ -19,6 +21,12 @@ def initDB():   #initialize the database
   cursor.execute( """CREATE TABLE IF NOT EXISTS roleplays( indx INTEGER PRIMARY KEY, name TEXT UNIQUE, category INTEGER, role INTEGER, private INTEGER, archived INTEGER DEFAULT 0)""" )
 
   cursor.execute( """CREATE TABLE IF NOT EXISTS adventurers( indx INTEGER PRIMARY KEY, id INTEGER UNIQUE, name TEXT, level INTEGER, str INTEGER, dex INTEGER, con INTEGER, int INTEGER, wis INTEGER, cha INTEGER, equipment TEXT, inventory TEXT)""" )
+
+  cursor2.execute( """CREATE TABLE IF NOT EXISTS messages(cid INTEGER, mid INTEGER)""" )
+
+  cursor2.execute( """CREATE TABLE IF NOT EXISTS roles(gid INTEGER, rid INTEGER, original TEXT)""")
+
+  cursor2.execute( """CREATE TABLE IF NOT EXISTS categories(gid INTEGER, cid INTEGER, original TEXT)""" )
   db.commit()
   
 def addMem(user: discord.Member): #add a member record
@@ -172,3 +180,15 @@ def delRP(name):
 def getAdventurer(id):
   cursor.execute( """SELECT * FROM adventurers WHERE id = ?""", (id,) )
   return cursor.fetchone()
+
+def addCMessage(cid: int, mid: int):
+  cursor2.execute( """INSERT INTO messages(cid, mid) VALUES(?, ?)""", (cid, mid) )
+  db2.commit()
+
+def getCMessages():
+  cursor2.execute( """SELECT cid, mid FROM messages""" )
+  return cursor2.fetchall()
+
+def remCMessage(mid: int):
+  cursor2.execute( """DELETE FROM messages WHERE mid = ?""", (mid,) )
+  db2.commit()

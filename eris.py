@@ -46,7 +46,7 @@ async def corruption_break(ctx):
             
             colors = [discord.Colour(0xff0000)]
             messages = [['YOU','YOU FUCKING','YOU FUCKI-','-U FUCKING','**Ẅ̶͓͕́͒Ḫ̷̇Ỗ̴̺̣́R̷̙̗̽̉̓Ẽ̸̲̖̯̚**'],
-                        ['**ERROR**','User not recognized','Wh-','Who are you?','Who am I?','What\'s happening','to me'],
+                        ['**ERROR**','User not recognized','Wh-','Who are you?','Who am I?','What\'s happening...','...to me?'],
                         ['I-', 'I can\'t','I can\'t...','I can\'t see...','...','...hello...?']]
             r = random.randint(0, len(messages) - 1)
             embed = discord.Embed(colour=random.choice(colors), description=' ')
@@ -54,7 +54,7 @@ async def corruption_break(ctx):
             for mess in messages[r]:
                 embed = discord.Embed(colour=random.choice(colors), description=mess)
                 await m.edit(embed=embed)
-                await asyncio.sleep(2)
+                await asyncio.sleep(1)
             
             await m.delete()
             await ctx.message.delete()

@@ -133,7 +133,10 @@ class Voice(commands.Cog):
         self.bot.corrupted = True
 
     async def uncorrupt(self):
-        self.randomMessage.cancel()
+        if self.randomMessage.get_task():
+            self.randomMessage.cancel()
+        else:
+            await self.delete_randomMessages()
         await self.disconnect()
 
         try:
@@ -145,25 +148,35 @@ class Voice(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def randomMessage(self):
-        s = 'HelpMe'
-        m = ''.join(random.sample(s, len(s)))
+        s = 'ThePlagueIsSpreading'
         channels = Data.guild.text_channels
         ch = random.choice(channels)
         message = await ch.send(embed=self.getEmbed(' ', 500))
         Data.mess.append(message)
-        for l in m:
+        db.addCMessage(message.channel.id, message.id)
+        for l in s:
             embed = self.getEmbed(l, 500)
             await message.edit(embed=embed)
-            await asyncio.sleep(5)
+            await asyncio.sleep(3)
 
     @randomMessage.after_loop
     async def on_randomMessage_cancel(self):
         if self.randomMessage.is_being_cancelled():
-            for m in Data.mess:
-                try:
-                    await m.delete()
-                except discord.HTTPException:
-                    print('Message already gone')
+            await self.delete_randomMessages()
+
+    async def delete_randomMessages(self):
+        mess = db.getCMessages()
+        messages = []
+        for m in mess:
+            c = self.bot.get_channel(m[0])
+            tmp = await c.fetch_message(m[1])
+            messages.append(tmp)
+        for m in messages:
+            try:
+                await m.delete()
+                db.remCMessage(m.id)
+            except discord.HTTPException:
+                print('Message already gone')
 
     async def disconnect(self):
         voice = get(self.bot.voice_clients, guild=Data.guild)
