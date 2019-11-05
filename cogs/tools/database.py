@@ -27,6 +27,10 @@ def initDB():   #initialize the database
   cursor2.execute( """CREATE TABLE IF NOT EXISTS roles(gid INTEGER, rid INTEGER, original TEXT)""")
 
   cursor2.execute( """CREATE TABLE IF NOT EXISTS categories(gid INTEGER, cid INTEGER, original TEXT)""" )
+
+  cursor2.execute( """CREATE TABLE IF NOT EXISTS newcategories(gid INTEGER, cid INTEGER)""" )
+
+  cursor2.execute( """CREATE TABLE IF NOT EXISTS channels(gid INTEGER, cid INTEGER)""" )
   db.commit()
   
 def addMem(user: discord.Member): #add a member record
@@ -191,4 +195,28 @@ def getCMessages():
 
 def remCMessage(mid: int):
   cursor2.execute( """DELETE FROM messages WHERE mid = ?""", (mid,) )
+  db2.commit()
+
+def addNewCategory(gid: int, cid: int):
+  cursor2.execute( """INSERT INTO newcategories(gid, cid) VALUES(?, ?)""", (gid, cid) )
+  db2.commit()
+
+def getNewCategory():
+  cursor2.execute( """SELECT gid, cid FROM newcategories""" )
+  return cursor2.fetchall()
+
+def remNewCategory(cid: int):
+  cursor2.execute( """DELETE FROM newcategories WHERE cid = ?""", (cid,) )
+  db2.commit()
+
+def addChannel(gid: int, cid: int):
+  cursor2.execute( """INSERT INTO channels(gid, cid) VALUES(?, ?)""", (gid, cid) )
+  db2.commit()
+
+def getChannel():
+  cursor2.execute( """SELECT gid, cid FROM channels""" )
+  return cursor2.fetchall()
+
+def remChannel(cid: int):
+  cursor2.execute( """DELETE FROM channels WHERE cid = ?""", (cid,) )
   db2.commit()

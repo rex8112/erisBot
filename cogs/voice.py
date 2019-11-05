@@ -121,7 +121,6 @@ class Voice(commands.Cog):
             await self.uncorrupt()
 
     async def corrupt(self):
-        self.randomMessage.start()
         #categories = Data.guild.categories
         #Data.chan = await Data.guild.create_text_channel(name='_____',category=random.choice(categories),reason='Error 403: Request Denied')
 
@@ -130,6 +129,24 @@ class Voice(commands.Cog):
                 await self.bot.user.edit(username='E̷͑͐r̸̎͝í̴̛s̵', avatar=myfile.read())
         except discord.HTTPException:
             print('Failed to update profile, continuing')
+
+        # ----- Category Creation -----
+        overwrites = {
+            Data.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+            Data.guild.me: discord.PermissionOverwrite(send_messages=True)
+        }
+        cat = await Data.guild.create_category(name='̴̷̧́͟ ̛͟͠͠ ҉̀ ͏͘͏ ̢͟ ̵̴ ̛́́ ̢̡ ̴̶͜͟͝ ̨̛͢͡ ̵̡ ̨͝ ͟͝ ̴̢ ͏ ͏͞҉͞ ̵̵̵̛͘ ̢̛͢͝͏ ̵̢̨͠ ̵́͜͞', overwrites=overwrites, reason='They command it')
+        await cat.edit(position=0)
+        db.addNewCategory(Data.guild.id, cat.id)
+        for _ in range(5):
+            r = ''
+            for _ in range(8):
+                l = random.choice(string.ascii_letters)
+                r += l
+            ch = await cat.create_text_channel(name=r, reason='They command it')
+            db.addChannel(Data.guild.id, ch.id)
+
+        self.randomMessage.start()
         self.bot.corrupted = True
 
     async def uncorrupt(self):
@@ -144,15 +161,32 @@ class Voice(commands.Cog):
                 await self.bot.user.edit(username='Eris', avatar=myfile.read())
         except discord.HTTPException:
             print('Failed to update profile, continuing')
+
+        # ----- Category Deletion -----
+        channels = db.getChannel()
+        for channel in channels:
+            ch = self.bot.get_channel(channel[1])
+            db.remChannel(ch.id)
+            await ch.delete()
+        categories = db.getNewCategory()
+        for category in categories:
+            g = self.bot.get_guild(category[0])
+            ids = []
+            for i in categories:
+                ids.append(i[1])
+            for cat in g.categories:
+                if cat.id in ids:
+                    db.remNewCategory(cat.id)
+                    await cat.delete()
+
         self.bot.corrupted = False
 
     @tasks.loop(minutes=30)
     async def randomMessage(self):
         s = 'ThePlagueIsSpreading'
-        channels = Data.guild.text_channels
-        ch = random.choice(channels)
+        channels = db.getChannel()
+        ch = self.bot.get_channel(random.choice(channels)[1])
         message = await ch.send(embed=self.getEmbed(' ', 500))
-        Data.mess.append(message)
         db.addCMessage(message.channel.id, message.id)
         for l in s:
             embed = self.getEmbed(l, 500)
