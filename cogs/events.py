@@ -6,7 +6,7 @@ import logging
 
 
 from discord.ext import commands
-from cogs.tools.database import database as db
+import cogs.tools.database as db
 from cogs.xp import XP as XP
 from cogs.tools.configLoader import settings
 
