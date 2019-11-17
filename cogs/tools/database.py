@@ -220,3 +220,15 @@ def getChannel():
 def remChannel(cid: int):
   cursor2.execute( """DELETE FROM channels WHERE cid = ?""", (cid,) )
   db2.commit()
+
+def addCategory(gid: int, cid: int, original: str):
+  cursor2.execute( """INSERT INTO categories(gid, cid, original) VALUES(?, ?, ?)""", (gid, cid, original) )
+  db2.commit()
+
+def getCategory():
+  cursor2.execute( """SELECT gid, cid, original FROM categories""" )
+  return cursor2.fetchall()
+
+def remCategory(cid: int):
+  cursor2.execute( """DELETE FROM categories WHERE cid = ?""", (cid,) )
+  db2.commit()

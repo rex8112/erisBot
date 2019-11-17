@@ -14,6 +14,7 @@ logger = logging.getLogger('corruption')
 
 class Data:
     guildID = 180069417625845760
+    catID = 469782371730980865
     guild = None
     chan = None
     mess = []
@@ -135,9 +136,12 @@ class Voice(commands.Cog):
             Data.guild.default_role: discord.PermissionOverwrite(send_messages=False),
             Data.guild.me: discord.PermissionOverwrite(send_messages=True)
         }
-        cat = await Data.guild.create_category(name='̴̷̧́͟ ̛͟͠͠ ҉̀ ͏͘͏ ̢͟ ̵̴ ̛́́ ̢̡ ̴̶͜͟͝ ̨̛͢͡ ̵̡ ̨͝ ͟͝ ̴̢ ͏ ͏͞҉͞ ̵̵̵̛͘ ̢̛͢͝͏ ̵̢̨͠ ̵́͜͞', overwrites=overwrites, reason='They command it')
-        await cat.edit(position=0)
-        db.addNewCategory(Data.guild.id, cat.id)
+        cat = None
+        for c in Data.guild.categories:
+            if c.id == Data.catID:
+                cat = c
+                db.addCategory(Data.guild.id, cat.id, cat.name)
+                await cat.edit(name='̴̷̧́͟ ̛͟͠͠ ҉̀ ͏͘͏ ̢͟ ̵̴ ̛́́ ̢̡ ̴̶͜͟͝ ̨̛͢͡ ̵̡ ̨͝ ͟͝ ̴̢ ͏ ͏͞҉͞ ̵̵̵̛͘ ̢̛͢͝͏ ̵̢̨͠ ̵́͜͞', reason='They command it')
         for _ in range(5):
             r = ''
             for _ in range(8):
@@ -171,13 +175,19 @@ class Voice(commands.Cog):
         categories = db.getNewCategory()
         for category in categories:
             g = self.bot.get_guild(category[0])
-            ids = []
-            for i in categories:
-                ids.append(i[1])
             for cat in g.categories:
-                if cat.id in ids:
+                if cat.id == category.id:
                     db.remNewCategory(cat.id)
                     await cat.delete()
+
+        rCategories = db.getCategory()
+        for cat in rCategories:
+            g = self.bot.get_guild(cat[0])
+            for c in g.categories:
+                if c.id == cat[1]:
+                    await c.edit(name=cat[2])
+                    db.remCategory(cat[1])
+
 
         self.bot.corrupted = False
 
