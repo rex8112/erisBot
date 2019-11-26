@@ -127,7 +127,7 @@ class Voice(commands.Cog):
 
         try:
             with open('erisGlitch.png', 'rb') as myfile:
-                await self.bot.user.edit(username='E̷͑͐r̸̎͝í̴̛s̵', avatar=myfile.read())
+                await self.bot.user.edit(username='P̷l̵a̶g̸u̴e̸', avatar=myfile.read())
         except discord.HTTPException:
             print('Failed to update profile, continuing')
 
