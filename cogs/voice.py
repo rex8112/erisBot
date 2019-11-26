@@ -193,7 +193,7 @@ class Voice(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def randomMessage(self):
-        s = 'ThePlagueIsSpreading'
+        s = 'TheyWantYouToJoinThem '
         channels = db.getChannel()
         ch = self.bot.get_channel(random.choice(channels)[1])
         message = await ch.send(embed=self.getEmbed(' ', 500))

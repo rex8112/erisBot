@@ -13,7 +13,7 @@ from cogs.tools.configLoader import settings
 startup_extensions = ['cogs.admin', 'cogs.utility', 'cogs.xp', 'cogs.events', 'cogs.meme', 'cogs.roleplay', 'cogs.voice']
 
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
-bot = commands.Bot(description='Created by rex8112', command_prefix='t.', owner_id=int(settings.owner), activity=game)
+bot = commands.Bot(description='Created by rex8112', command_prefix='.', owner_id=int(settings.owner), activity=game)
 game = discord.Activity(name='.help', type=discord.ActivityType.listening)
 
 logging.basicConfig(filename='events.log', level=logging.INFO, format='%(asctime)s | %(name)s | %(levelname)s | %(message)s', datefmt='%m/%d/%Y %H:%M:%S')
