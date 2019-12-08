@@ -182,10 +182,11 @@ class Voice(commands.Cog):
         self.bot.corrupted = True
 
     async def uncorrupt(self):
-        if self.randomMessage.get_task():
-            self.randomMessage.cancel()
-        else:
-            await self.delete_randomMessages()
+        print('Uncorrupting')
+        # if self.randomMessage.get_task():
+        #     self.randomMessage.cancel()
+        # else:
+        #     await self.delete_randomMessages()
         await self.disconnect()
 
         try:
@@ -245,8 +246,8 @@ class Voice(commands.Cog):
             messages.append(tmp)
         for m in messages:
             try:
-                await m.delete()
                 db.remCMessage(m.id)
+                await m.delete()
             except discord.HTTPException:
                 print('Message already gone')
 
