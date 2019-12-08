@@ -18,8 +18,8 @@ class Data:
     guild = None
     chan = None
     mess = []
-    startTime = datetime.time(hour=23, minute = 0, second=0)
-    endTime = datetime.time(hour=5, minute=0, second=0)
+    startTime = datetime.time(hour=20, minute = 0, second=0)
+    endTime = datetime.time(hour=12, minute=0, second=0)
 
 class Voice(commands.Cog):
     def __init__(self, bot):
@@ -29,7 +29,7 @@ class Voice(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('test')
+        print('Voice Ready')
 
     @commands.command(hidden=True)
     @commands.is_owner()
@@ -49,6 +49,34 @@ class Voice(commands.Cog):
         voice.source.volume = 0.1
         await asyncio.sleep(30)
         await voice.disconnect()
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def speak(self, ctx, ch: discord.TextChannel):
+        """Send Message"""
+        message_content = ['It would appear that some of you found misfortune in our efforts.\n',
+                            'Have no fear, our efforts have finished and they have been quite fruitful.\n',
+                            '\nEris has joined us.',
+                            ]
+        new = True
+        full = ''
+        for m in message_content:
+            full += m
+            embed = discord.Embed(colour=discord.Colour(0x166B0D), description=full)
+            if new:
+                message = await ch.send(embed=embed)
+                new = False
+            else:
+                message.edit(embed=embed)
+            await asyncio.sleep(2)
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def speakc(self, ctx, ch: discord.TextChannel, *, content):
+        """Send Message"""
+        embed = discord.Embed(colour=discord.Colour(0x166B0D), description=content)
+        await ch.send(embed=embed)
+        await ctx.message.add_reaction('✅')
         
     # @commands.command()
     # @commands.guild_only()
@@ -98,9 +126,9 @@ class Voice(commands.Cog):
             if self.bot.corrupted == False:
                 print('Immediately corrupting for catch up')
                 await self.corrupt()
-            elif not self.randomMessage.get_task(): #In the event the bot died and came back during corruption, it won't go through corrupt() and start randomMessage()
-                self.randomMessage.start()
-                print('Restarting Random Messages')
+            # elif not self.randomMessage.get_task(): #In the event the bot died and came back during corruption, it won't go through corrupt() and start randomMessage()
+            #     self.randomMessage.start()
+            #     print('Restarting Random Messages')
             
             delta = endTime - now
             if delta.days < 0:
@@ -132,25 +160,25 @@ class Voice(commands.Cog):
             print('Failed to update profile, continuing')
 
         # ----- Category Creation -----
-        overwrites = {
-            Data.guild.default_role: discord.PermissionOverwrite(send_messages=False),
-            Data.guild.me: discord.PermissionOverwrite(send_messages=True)
-        }
-        cat = None
-        for c in Data.guild.categories:
-            if c.id == Data.catID:
-                cat = c
-                db.addCategory(Data.guild.id, cat.id, cat.name)
-                await cat.edit(name='̴̷̧́͟ ̛͟͠͠ ҉̀ ͏͘͏ ̢͟ ̵̴ ̛́́ ̢̡ ̴̶͜͟͝ ̨̛͢͡ ̵̡ ̨͝ ͟͝ ̴̢ ͏ ͏͞҉͞ ̵̵̵̛͘ ̢̛͢͝͏ ̵̢̨͠ ̵́͜͞', reason='They command it')
-        for _ in range(5):
-            r = ''
-            for _ in range(8):
-                l = random.choice(string.ascii_letters)
-                r += l
-            ch = await cat.create_text_channel(name=r, reason='They command it')
-            db.addChannel(Data.guild.id, ch.id)
+        # overwrites = {
+        #     Data.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+        #     Data.guild.me: discord.PermissionOverwrite(send_messages=True)
+        # }
+        # cat = None
+        # for c in Data.guild.categories:
+        #     if c.id == Data.catID:
+        #         cat = c
+        #         db.addCategory(Data.guild.id, cat.id, cat.name)
+        #         await cat.edit(name='̴̷̧́͟ ̛͟͠͠ ҉̀ ͏͘͏ ̢͟ ̵̴ ̛́́ ̢̡ ̴̶͜͟͝ ̨̛͢͡ ̵̡ ̨͝ ͟͝ ̴̢ ͏ ͏͞҉͞ ̵̵̵̛͘ ̢̛͢͝͏ ̵̢̨͠ ̵́͜͞', reason='We command it')
+        # for _ in range(5):
+        #     r = ''
+        #     for _ in range(8):
+        #         l = random.choice(string.ascii_letters)
+        #         r += l
+        #     ch = await cat.create_text_channel(name=r, reason='We command it')
+        #     db.addChannel(Data.guild.id, ch.id)
 
-        self.randomMessage.start()
+        #self.randomMessage.start()
         self.bot.corrupted = True
 
     async def uncorrupt(self):

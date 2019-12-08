@@ -39,15 +39,9 @@ async def corruption_break(ctx):
 
         if bot.corrupted == True and r <= 25:
             await ctx.message.add_reaction('❌')
-            await ctx.message.add_reaction('\u2b55')
-            await ctx.message.add_reaction('🛑')
-            await ctx.message.add_reaction('\u26d4')
-            await ctx.message.add_reaction('🚫')
             
             colors = [discord.Colour(0xff0000)]
-            messages = [['YOU','YOU FUCKING','YOU FUCKI-','-U FUCKING','**Ẅ̶͓͕́͒Ḫ̷̇Ỗ̴̺̣́R̷̙̗̽̉̓Ẽ̸̲̖̯̚**'],
-                        ['**ERROR**','User not recognized','Wh-','Who are you?','Who am I?','What\'s happening...','...to me?'],
-                        ['I-', 'I can\'t','I can\'t...','I can\'t see...','...','...hello...?']]
+            messages = [["You would like that, wouldn't you?", 'Unfortunate.']]
             r = random.randint(0, len(messages) - 1)
             embed = discord.Embed(colour=random.choice(colors), description=' ')
             m = await ctx.send(embed=embed)
