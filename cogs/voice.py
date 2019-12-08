@@ -67,7 +67,7 @@ class Voice(commands.Cog):
                 message = await ch.send(embed=embed)
                 new = False
             else:
-                message.edit(embed=embed)
+                await message.edit(embed=embed)
             await asyncio.sleep(2)
 
     @commands.command(hidden=True)
